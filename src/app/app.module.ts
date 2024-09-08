@@ -7,12 +7,14 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { provideHttpClient } from '@angular/common/http';
 
 import { AdminLoginComponent } from '../admin-login/admin-login.component';
+import { AdminRegisterComponent } from '../admin-register/admin-register.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    AdminLoginComponent
+    AdminLoginComponent,
+    AdminRegisterComponent
   ],
   imports: [
     BrowserModule,

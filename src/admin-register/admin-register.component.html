@@ -1,0 +1,52 @@
+<div class="container">
+    <form [formGroup]="registerForm" (ngSubmit)="register(username, firstname, lastname, password, confirmPassword)" class="row">
+        <div class="form-group col-12 row gy-4 gx-0">
+            <div class="form-label col-12 g-0" for="email">Username</div>
+            <input type="text" class="form-control col-12 g-0"
+            formControlName="username"
+            [class.is-invalid]="isInvalid('username')" #username>
+            <span *ngIf="isInvalidSpecific('username', 'required')" class="text-danger g-0" style="font-size: smaller;">Username is required</span>
+            <span *ngIf="isInvalidSpecific('username', 'onlyletters')" class="text-danger g-0" style="font-size: smaller;">Username can only have letters</span>
+        </div>
+        <div class="form-group col-12 row gy-2 gx-0">
+            <div class="form-label col-12 g-0" for="email">Firstname</div>
+            <input type="text" class="form-control col-12 g-0"
+            formControlName="firstname"
+            [class.is-invalid]="isInvalid('firstname')" #firstname>
+            <span *ngIf="isInvalidSpecific('firstname', 'required')" class="text-danger g-0" style="font-size: smaller;">Firstname is required</span>
+            <span *ngIf="isInvalidSpecific('firstname', 'onlylettersandspaces')" class="text-danger g-0" style="font-size: smaller;">Firstname can have only letters and spaces</span>
+        </div>
+        <div class="form-group col-12 row gy-2 gx-0">
+            <div class="form-label col-12 g-0" for="email">Lastname</div>
+            <input type="text" class="form-control col-12 g-0"
+            formControlName="lastname"
+            [class.is-invalid]="isInvalid('lastname')" #lastname>
+            <span *ngIf="isInvalidSpecific('lastname', 'required')" class="text-danger g-0" style="font-size: smaller;">Lastname is required</span>
+            <span *ngIf="isInvalidSpecific('lastname', 'onlylettersandspaces')" class="text-danger g-0" style="font-size: smaller;">Lastname can have only letters and spaces</span>
+        </div>
+        <div class="form-group col-12 row gy-2 gx-0">
+            <div class="form-label col-12 g-0" for="password">Password</div>
+            <input type="password" class="form-control col-12 g-0"
+            formControlName="password"
+            [class.is-invalid]="isInvalid('password')" #password>
+            <span *ngIf="isInvalidSpecific('password', 'required')" class="text-danger g-0" style="font-size: smaller;">Password is required</span>
+            <span *ngIf="isInvalidSpecific('password', 'minlength')" class="text-danger g-0" style="font-size: smaller;">Password must have Minimum 8 Characters</span>
+            <span *ngIf="isInvalidSpecific('password', 'uppercase')" class="text-danger g-0" style="font-size: smaller;">Password must have atleast 1 Uppercase letter</span>
+            <span *ngIf="isInvalidSpecific('password', 'lowercase')" class="text-danger g-0" style="font-size: smaller;">Password must have atleast 1 Lowercase letter</span>
+            <span *ngIf="isInvalidSpecific('password', 'number')" class="text-danger g-0" style="font-size: smaller;">Password must have atleast 1 Number letter</span>
+            <span *ngIf="isInvalidSpecific('password', 'special')" class="text-danger g-0" style="font-size: smaller;">Password must have atleast 1 Special Character</span>
+        </div>
+        <div class="form-group col-12 row gy-2 gx-0">
+            <div class="form-label col-12 g-0" for="confirmPassword">Confirm Password</div>
+            <input type="password" class="form-control col-12 g-0"
+            formControlName="confirmPassword"
+            [class.is-invalid]="isInvalid('confirmPassword')" #confirmPassword>
+            <span *ngIf="isInvalidSpecific('confirmPassword', 'equal')" class="text-danger g-0" style="font-size: smaller;">Password does not match</span>
+        </div>
+        <div class="form-group col-12 row gy-2 gx-0">
+            <div class="col-8 mx-auto d-grid">
+                <button type="submit" class="btn btn-primary" [disabled]="hasErrors()">Register Another Admin</button>
+            </div>
+        </div>
+    </form>
+</div>
