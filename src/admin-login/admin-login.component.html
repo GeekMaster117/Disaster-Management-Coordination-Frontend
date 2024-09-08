@@ -1,0 +1,23 @@
+<div class="container">
+    <form [formGroup]="loginForm" (ngSubmit)="login(username, password)" class="row">
+        <div class="form-group col-12 row gy-4 gx-0">
+            <div class="form-label col-12 g-0" for="email">Username</div>
+            <input type="text" class="form-control col-12 g-0"
+            formControlName="username"
+            [class.is-invalid]="isInvalid('username')" #username>
+            <span *ngIf="isInvalidSpecific('username', 'required')" class="text-danger g-0" style="font-size: smaller;">Username is required</span>
+        </div>
+        <div class="form-group col-12 row gy-2 gx-0">
+            <div class="form-label col-12 g-0" for="password">Password</div>
+            <input type="password" class="form-control col-12 g-0"
+            formControlName="password"
+            [class.is-invalid]="isInvalid('password')" #password>
+            <span *ngIf="isInvalidSpecific('password', 'required')" class="text-danger g-0" style="font-size: smaller;">Password is required</span>
+        </div>
+        <div class="form-group col-12 row gy-2 gx-0">
+            <div class="col-4 mx-auto d-grid">
+                <button type="submit" class="btn btn-primary">Sign In</button>
+            </div>
+        </div>
+    </form>
+</div>
