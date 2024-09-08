@@ -16,7 +16,7 @@ import { onlyLetters, onlyLettersAndSpaces } from "../validators/text.validator"
 })
 
 export class AdminRegisterComponent implements OnInit {
-    public constructor(private service: RegisterService, private router: Router, private fb: FormBuilder) {}
+    public constructor(private service: RegisterService, private router: Router, private fb: FormBuilder, private guard: AuthGuard) {}
     public registerForm: FormGroup = null!
 
     public ngOnInit(): void {
@@ -49,7 +49,7 @@ export class AdminRegisterComponent implements OnInit {
             validator: equal('confirmPassword', 'password')
         })
         setTimeout(() => {
-            if (!AuthGuard.isLoggedIn())
+            if (!this.guard.isLoggedIn())
             {
                 alert('Login Expired. Please login again')
                 this.router.navigate(['login'])

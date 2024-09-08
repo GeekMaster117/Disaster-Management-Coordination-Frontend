@@ -8,13 +8,15 @@ import { provideHttpClient } from '@angular/common/http';
 
 import { AdminLoginComponent } from '../admin-login/admin-login.component';
 import { AdminRegisterComponent } from '../admin-register/admin-register.component';
+import { AdminHomeComponent } from '../admin-home/admin-home.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     AdminLoginComponent,
-    AdminRegisterComponent
+    AdminRegisterComponent,
+    AdminHomeComponent
   ],
   imports: [
     BrowserModule,

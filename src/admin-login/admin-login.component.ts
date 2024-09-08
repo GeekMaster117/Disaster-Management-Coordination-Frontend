@@ -12,11 +12,11 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 })
 
 export class AdminLoginComponent implements OnInit {
-    public constructor(private service: LoginService, private router: Router, private fb: FormBuilder) {}
+    public constructor(private service: LoginService, private router: Router, private fb: FormBuilder, private guard: AuthGuard) { }
     public loginForm: FormGroup = null!
 
     public ngOnInit(): void {
-        if (AuthGuard.isLoggedIn())
+        if (this.guard.isLoggedIn())
             this.router.navigate(['admin/home'])
         this.loginForm = this.fb.group({
             username: ['', [
