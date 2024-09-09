@@ -1,8 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import { LoginService } from "./admin-login.service";
-import { APIResponse } from "../response/api.response";
+import { APIResponse } from "../../../response/api.response";
 import { Router } from "@angular/router";
-import { AuthGuard } from "../guard/auth.guard";
+import { AuthGuard } from "../../../guard/auth.guard";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 
 @Component({

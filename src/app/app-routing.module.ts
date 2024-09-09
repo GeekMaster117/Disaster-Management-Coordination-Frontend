@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { AdminLoginComponent } from '../admin-login/admin-login.component';
-import { AdminRegisterComponent } from '../admin-register/admin-register.component';
+import { AdminLoginComponent } from './components/admin-login/admin-login.component';
+import { AdminRegisterComponent } from './components/admin-register/admin-register.component';
 import { AuthGuard } from '../guard/auth.guard';
-import { AdminHomeComponent } from '../admin-home/admin-home.component';
+import { AdminHomeComponent } from './components/admin-home/admin-home.component';
 import { AboutComponent } from './components/about/about.component';
 import { PrecautionsComponent } from './components/precautions/precautions.component';
 import { DashboardComponent } from './components/dashboard/dashboard/dashboard.component';

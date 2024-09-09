@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { AuthGuard } from "../guard/auth.guard";
+import { AuthGuard } from "../../../guard/auth.guard";
 import { Router } from "@angular/router";
 
 @Component({

@@ -1,13 +1,13 @@
 import { Component, OnInit } from "@angular/core";
-import { APIResponse } from "../response/api.response";
+import { APIResponse } from "../../../response/api.response";
 import { RegisterService } from "./admin-register.service";
 import { Router } from "@angular/router";
-import { AuthGuard } from "../guard/auth.guard";
+import { AuthGuard } from "../../../guard/auth.guard";
 import { FormBuilder, FormGroup } from "@angular/forms";
 import { Validators } from "@angular/forms";
-import { atLeastOneUppercaseLetter, atLeastOneLowercaseLetter, atLeastOneNumber, atLeastOneSpecialCharacter } from "../validators/passwordValidator.validator"
-import { equal } from "../validators/equal.validator";
-import { NoSpaces, onlyLetters } from "../validators/text.validator";
+import { atLeastOneUppercaseLetter, atLeastOneLowercaseLetter, atLeastOneNumber, atLeastOneSpecialCharacter } from "../../../validators/passwordValidator.validator"
+import { equal } from "../../../validators/equal.validator";
+import { NoSpaces, onlyLetters } from "../../../validators/text.validator";
 
 @Component({
     selector: 'app-register',

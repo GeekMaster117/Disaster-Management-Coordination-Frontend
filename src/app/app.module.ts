@@ -7,9 +7,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { AdminInterceptor } from '../interceptor/admin.interceptor';
 
-import { AdminLoginComponent } from '../admin-login/admin-login.component';
-import { AdminRegisterComponent } from '../admin-register/admin-register.component';
-import { AdminHomeComponent } from '../admin-home/admin-home.component';
+import { AdminLoginComponent } from './components/admin-login/admin-login.component';
+import { AdminRegisterComponent } from './components/admin-register/admin-register.component';
+import { AdminHomeComponent } from './components/admin-home/admin-home.component';
 
 import { MatIconModule } from '@angular/material/icon';
 import { NavbarComponent } from './components/navbar/navbar.component';
