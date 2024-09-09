@@ -1,0 +1,16 @@
+<div class="about-container">
+    <div class="about-header">
+      <h2>About Our App</h2>
+     <p>Discover the key features of our application designed to enhance your disaster preparedness and response.</p>
+    </div>
+  
+    <div class="features-grid">
+      <div class="feature-card" *ngFor="let feature of features">
+        <div class="feature-header" [ngStyle]="{'background-image': 'url(' + feature.image + ')'}"></div>
+        <div class="feature-content">
+          <h3>{{ feature.title }}</h3>
+          <p>{{ feature.description }}</p>
+        </div>
+      </div>
+    </div>
+  </div>

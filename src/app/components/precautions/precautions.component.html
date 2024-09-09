@@ -1,0 +1,48 @@
+<div class="container">
+    <!-- Scrollable List on the left -->
+    <div class="scroll-list">
+      <ul>
+        <li *ngFor="let disaster of disasters" (click)="onSelectDisaster(disaster)" [class.selected]="disaster === selectedDisaster">
+          {{ disaster }}
+        </li>
+      </ul>
+    </div>
+  
+    <!-- Single Card containing Dos & Don'ts and Videos -->
+    <div class="combined-card">
+      <div class="card-header">
+        <h3>Instructions</h3>
+      </div>
+      <div class="card-body">
+        <div class="instructions-content">
+          <!-- Dos & Don'ts Section -->
+          <div class="dos-donts">
+            <h4 id="dos-h4"> DOs
+            </h4>
+            <ul>
+              <li *ngFor="let item of dos">
+                <img src="https://static.vecteezy.com/system/resources/previews/010/152/436/original/tick-check-mark-icon-sign-symbol-design-free-png.png" class="icon" alt="Check mark"> {{ item }}
+              </li>
+            </ul>
+            <h4 id="donts-h4"> DON'Ts
+            </h4>
+            <ul>
+              <li *ngFor="let item of donts">
+                <img src="https://th.bing.com/th/id/R.e88bb40ecefdbd2d2f9a02944e23e687?rik=egJSj%2bSgNwIo%2bw&riu=http%3a%2f%2fwww.clipartbest.com%2fcliparts%2f9cR%2fLbg%2f9cRLbgE7i.png&ehk=um2l3QR5q%2bY4Ii8W05U1Ly%2f%2bmY5QrVU8ZFS1fmzOXlc%3d&risl=&pid=ImgRaw&r=0" class="icon" alt="Wrong mark"> {{ item }}
+              </li>
+            </ul>
+          </div>
+          
+          <!-- Videos Section -->
+          <div class="videos">
+            <div class="video-grid">
+              <div *ngFor="let video of videos" class="video-item">
+                <iframe [src]="video.url" frameborder="0" allowfullscreen></iframe>
+                <p>{{ video.title }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

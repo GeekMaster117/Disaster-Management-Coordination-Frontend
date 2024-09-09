@@ -1,0 +1,5 @@
+<div class="headlines-ticker" *ngIf="(headlines$ | async) as data">
+    <ng-container *ngFor="let feature of data.features">
+        <span class="headline-item">{{ feature.properties.title }}</span>
+    </ng-container>
+</div>

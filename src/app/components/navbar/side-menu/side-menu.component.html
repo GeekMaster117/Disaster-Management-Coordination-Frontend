@@ -1,0 +1,9 @@
+<!-- side-menu.component.html -->
+<div class="side-menu" [ngClass]="{ 'show': sideMenuOpen }">
+    <button class="close-btn" (click)="closeMenu()">×</button>
+    <ul>
+        <li><a routerLink="/dashboard" routerLinkActive="active" ariaCurrentWhenActive="page">DASHBOARD</a></li>
+        <li><a routerLink="/precautions" routerLinkActive="active" ariaCurrentWhenActive="page">PRECAUTIONS</a></li>
+        <li><a routerLink="/about" routerLinkActive="active" ariaCurrentWhenActive="page">ABOUT</a></li>
+    </ul>
+</div>

@@ -1,0 +1,23 @@
+.headlines-ticker {
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    box-sizing: border-box;
+    padding-right: 100%;
+    animation: ticker 30s linear infinite;
+    font-size: 1rem;
+    color: #fff;
+}
+
+.headline-item {
+    margin-right: 2rem;
+}
+
+@keyframes ticker {
+    0% {
+        transform: translateX(100%);
+    }
+    100% {
+        transform: translateX(-100%);
+    }
+}
