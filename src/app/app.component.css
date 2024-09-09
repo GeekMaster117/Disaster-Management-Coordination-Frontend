@@ -1,7 +1,7 @@
-html, body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
+:host {
+    display: block;
+    position: relative;
+    z-index: 1000; /* Should not conflict with navbar or side menu */
   }
   
   .app-container {
@@ -22,4 +22,5 @@ html, body {
     text-align: center;
     width: 100%;
   }
+  
   

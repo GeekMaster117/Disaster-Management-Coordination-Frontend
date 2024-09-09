@@ -16,6 +16,7 @@ import { LegendCardComponent } from './components/dashboard/legend-card/legend-c
 import { DashboardComponent } from './components/dashboard/dashboard/dashboard.component';
 import { EarthquakeHeadlinesComponent } from './components/dashboard/earthquake-headlines/earthquake-headlines.component';
 import { MapComponent } from './components/dashboard/map/map.component';
+import { SideMenuComponent } from './components/navbar/side-menu/side-menu.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { MapComponent } from './components/dashboard/map/map.component';
     LegendCardComponent,
     DashboardComponent,
     EarthquakeHeadlinesComponent,
-    MapComponent
+    MapComponent,
+    SideMenuComponent
   ],
   imports: [
     BrowserModule,

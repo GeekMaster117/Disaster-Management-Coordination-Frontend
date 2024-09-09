@@ -1,10 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
+import { SideMenuComponent } from './side-menu/side-menu.component'
 
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
-  styleUrl: './navbar.component.css'
+  styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent {
+  @ViewChild(SideMenuComponent) sideMenu!: SideMenuComponent;
 
+  onSideMenuClose(): void {
+  }
 }
