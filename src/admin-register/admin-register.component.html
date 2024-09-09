@@ -6,7 +6,7 @@
             formControlName="username"
             [class.is-invalid]="isInvalid('username')" #username>
             <span *ngIf="isInvalidSpecific('username', 'required')" class="text-danger g-0" style="font-size: smaller;">Username is required</span>
-            <span *ngIf="isInvalidSpecific('username', 'onlyletters')" class="text-danger g-0" style="font-size: smaller;">Username can only have letters</span>
+            <span *ngIf="isInvalidSpecific('username', 'nospaces')" class="text-danger g-0" style="font-size: smaller;">Username cannot have any white space</span>
         </div>
         <div class="form-group col-12 row gy-2 gx-0">
             <div class="form-label col-12 g-0" for="email">Firstname</div>
@@ -14,7 +14,7 @@
             formControlName="firstname"
             [class.is-invalid]="isInvalid('firstname')" #firstname>
             <span *ngIf="isInvalidSpecific('firstname', 'required')" class="text-danger g-0" style="font-size: smaller;">Firstname is required</span>
-            <span *ngIf="isInvalidSpecific('firstname', 'onlylettersandspaces')" class="text-danger g-0" style="font-size: smaller;">Firstname can have only letters and spaces</span>
+            <span *ngIf="isInvalidSpecific('firstname', 'onlyletters')" class="text-danger g-0" style="font-size: smaller;">Firstname can have only letters</span>
         </div>
         <div class="form-group col-12 row gy-2 gx-0">
             <div class="form-label col-12 g-0" for="email">Lastname</div>
@@ -22,7 +22,7 @@
             formControlName="lastname"
             [class.is-invalid]="isInvalid('lastname')" #lastname>
             <span *ngIf="isInvalidSpecific('lastname', 'required')" class="text-danger g-0" style="font-size: smaller;">Lastname is required</span>
-            <span *ngIf="isInvalidSpecific('lastname', 'onlylettersandspaces')" class="text-danger g-0" style="font-size: smaller;">Lastname can have only letters and spaces</span>
+            <span *ngIf="isInvalidSpecific('lastname', 'onlyletters')" class="text-danger g-0" style="font-size: smaller;">Lastname can have only letters</span>
         </div>
         <div class="form-group col-12 row gy-2 gx-0">
             <div class="form-label col-12 g-0" for="password">Password</div>

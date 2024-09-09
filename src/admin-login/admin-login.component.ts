@@ -16,7 +16,7 @@ export class AdminLoginComponent implements OnInit {
     public loginForm: FormGroup = null!
 
     public ngOnInit(): void {
-        if (this.guard.isLoggedIn())
+        if (this.guard.getLoginStatus())
             this.router.navigate(['admin/home'])
         this.loginForm = this.fb.group({
             username: ['', [
@@ -46,7 +46,6 @@ export class AdminLoginComponent implements OnInit {
     }
 
     public login(username: HTMLInputElement, password: HTMLInputElement): void {
-        console.log('hello')
         if (username.value.length == 0 || password.value.length == 0)
             return
         this.service.postLogin(username.value, password.value)

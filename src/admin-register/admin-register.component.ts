@@ -7,7 +7,7 @@ import { FormBuilder, FormGroup } from "@angular/forms";
 import { Validators } from "@angular/forms";
 import { atLeastOneUppercaseLetter, atLeastOneLowercaseLetter, atLeastOneNumber, atLeastOneSpecialCharacter } from "../validators/passwordValidator.validator"
 import { equal } from "../validators/equal.validator";
-import { onlyLetters, onlyLettersAndSpaces } from "../validators/text.validator";
+import { NoSpaces, onlyLetters } from "../validators/text.validator";
 
 @Component({
     selector: 'app-register',
@@ -23,15 +23,15 @@ export class AdminRegisterComponent implements OnInit {
         this.registerForm = this.fb.group({
             username: ['', [
                 Validators.required,
-                onlyLetters
+                NoSpaces
             ]],
             firstname: ['', [
                 Validators.required,
-                onlyLettersAndSpaces
+                onlyLetters
             ]],
             lastname: ['', [
                 Validators.required,
-                onlyLettersAndSpaces
+                onlyLetters
             ]],
             password: ['', [
                 Validators.required,
@@ -48,13 +48,6 @@ export class AdminRegisterComponent implements OnInit {
         {
             validator: equal('confirmPassword', 'password')
         })
-        setTimeout(() => {
-            if (!this.guard.isLoggedIn())
-            {
-                alert('Login Expired. Please login again')
-                this.router.navigate(['login'])
-            }
-        }, 10)
     }
 
     public isInvalid(input: string) {

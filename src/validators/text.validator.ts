@@ -8,10 +8,10 @@ export function onlyLetters(control: AbstractControl): ValidationErrors | null {
     }
 }
 
-export function onlyLettersAndSpaces(control: AbstractControl): ValidationErrors | null {
+export function NoSpaces(control: AbstractControl): ValidationErrors | null {
     const value: string = control.value
-    const hasOnlyLettersAndSpaces: boolean = /^[a-zA-Z ]+$/.test(value)
+    const hasOnlyLettersAndSpaces: boolean = /^\S*$/.test(value)
     return hasOnlyLettersAndSpaces ? null : {
-        onlylettersandspaces: true
+        nospaces: true
     }
 }

@@ -11,11 +11,6 @@ export class AuthService {
   public constructor(private httpClient: HttpClient) { }
 
   public getValidateToken(token: string): Observable<APIResponse> {
-    return this.httpClient.get<APIResponse>(`${this.baseString}/validate`,
-    {
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    })
+    return this.httpClient.get<APIResponse>(`${this.baseString}/validate`)
   }
 }

@@ -4,11 +4,14 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { provideHttpClient } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptors } from '@angular/common/http';
+import { HttpInterceptor } from '@angular/common/http';
 
 import { AdminLoginComponent } from '../admin-login/admin-login.component';
 import { AdminRegisterComponent } from '../admin-register/admin-register.component';
 import { AdminHomeComponent } from '../admin-home/admin-home.component';
+
+import { AdminInterceptor } from '../interceptor/admin.interceptor';
 
 
 @NgModule({
@@ -25,7 +28,7 @@ import { AdminHomeComponent } from '../admin-home/admin-home.component';
     FormsModule
   ],
   providers: [
-    provideHttpClient()
+    provideHttpClient(withInterceptors([AdminInterceptor]))
   ],
   bootstrap: [AppComponent]
 })

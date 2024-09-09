@@ -8,16 +8,5 @@ import { Router } from "@angular/router";
     styleUrl: './admin-home.component.css'
 })
 
-export class AdminHomeComponent implements OnInit {
-    public constructor(private router: Router, private guard: AuthGuard) { }
-
-    public ngOnInit(): void {
-        setTimeout(() => {
-            if (!this.guard.isLoggedIn())
-            {
-                alert('Login Expired. Please login again')
-                this.router.navigate(['login'])
-            }
-        }, 10)
-    }
+export class AdminHomeComponent {
 }

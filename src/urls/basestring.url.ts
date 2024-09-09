@@ -1,0 +1,1 @@
+export let baseString: string = 'http://localhost:5000'
