@@ -4,13 +4,13 @@
   }
 
   .navbar {
-    position: fixed;
+    position: fixed; /* Fixes the navbar to the top */
     top: 0;
     left: 0;
     right: 0;
-    z-index: 1050;
-    background: #007bff; 
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+    z-index: 1050; /* Ensure the navbar is above the map and other elements */
+    background: #007bff; /* Navbar background color */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional shadow */
     height: 8vh;
     display: flex;
     align-items: flex-end;

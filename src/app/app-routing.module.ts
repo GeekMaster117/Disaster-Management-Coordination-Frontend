@@ -7,6 +7,7 @@ import { AuthGuard } from '../guard/auth.guard';
 import { AdminHomeComponent } from '../admin-home/admin-home.component';
 import { AboutComponent } from './components/about/about.component';
 import { PrecautionsComponent } from './components/precautions/precautions.component';
+import { DashboardComponent } from './components/dashboard/dashboard/dashboard.component';
 
 const routes: Routes = [
   {
@@ -29,13 +30,22 @@ const routes: Routes = [
     component: AdminHomeComponent
   },
   {
+    path: 'dashboard',
+    component: DashboardComponent
+  },
+  {
     path: 'about',
     component: AboutComponent
   },
   {
     path: 'precautions',
     component: PrecautionsComponent
-  }
+  },
+  { 
+    path: '', 
+    redirectTo: 'dashboard', 
+    pathMatch: 'full' 
+  },
 ];
 
 @NgModule({
