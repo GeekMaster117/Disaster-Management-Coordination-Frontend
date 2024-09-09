@@ -1,0 +1,66 @@
+.about-container {
+    padding: 20px;
+    max-width: 1200px;
+    margin: auto;
+    margin-top: 8vh; /* Margin to ensure the component appears below the navbar */
+  }
+  
+  .about-header {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  
+  .about-header h2 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+  }
+  
+  .about-header p {
+    font-size: 1.2rem;
+    color: #555;
+  }
+  
+  .features-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+  }
+  
+  .feature-card {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    width: 300px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-align: center;
+  }
+  
+  .feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+  }
+  
+  .feature-header {
+    height: 150px; /* Height of the header strip */
+    background-size: cover;
+    background-position: center;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+  }
+  
+  .feature-content {
+    padding: 20px;
+  }
+  
+  .feature-content h3 {
+    font-size: 1.5rem;
+    margin: 0 0 10px 0;
+  }
+  
+  .feature-content p {
+    font-size: 1rem;
+    color: #666;
+  }
+  

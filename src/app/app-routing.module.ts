@@ -5,6 +5,7 @@ import { AdminLoginComponent } from '../admin-login/admin-login.component';
 import { AdminRegisterComponent } from '../admin-register/admin-register.component';
 import { AuthGuard } from '../guard/auth.guard';
 import { AdminHomeComponent } from '../admin-home/admin-home.component';
+import { AboutComponent } from './components/about/about.component';
 
 const routes: Routes = [
   {
@@ -12,6 +13,7 @@ const routes: Routes = [
     redirectTo: 'admin/login',
     pathMatch: 'full'
   },
+
   {
     path: 'admin/login',
     component: AdminLoginComponent
@@ -24,6 +26,10 @@ const routes: Routes = [
   {
     path: 'admin/home',
     component: AdminHomeComponent
+  },
+  {
+    path: 'about',
+    component: AboutComponent
   }
 ];
 
