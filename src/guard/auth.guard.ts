@@ -23,7 +23,7 @@ export class AuthGuard implements CanActivate {
                 return
             }
 
-            this.service.getValidateToken(localStorage.getItem('token')!)
+            this.service.getValidateToken()
             .subscribe({
                 error: (errorData: any) => {
                     localStorage.removeItem('token')

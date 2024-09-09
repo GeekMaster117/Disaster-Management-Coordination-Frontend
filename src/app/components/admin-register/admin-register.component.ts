@@ -68,7 +68,7 @@ export class AdminRegisterComponent implements OnInit {
     }
 
     public register(username: HTMLInputElement, firstname: HTMLInputElement, lastname: HTMLInputElement, password: HTMLInputElement, confirmPassword: HTMLInputElement): void {
-        this.service.postRegister(username.value, firstname.value, lastname.value, password.value, localStorage.getItem('token')!)
+        this.service.postRegister(username.value, firstname.value, lastname.value, password.value)
         .subscribe({
             next: (data: APIResponse) => {
                 alert(`${username.value} is registered`)

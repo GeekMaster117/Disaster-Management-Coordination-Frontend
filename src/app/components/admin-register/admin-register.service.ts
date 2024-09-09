@@ -10,7 +10,7 @@ import { baseString } from '../../../urls/basestring.url';
 export class RegisterService {
   public constructor(private http: HttpClient) { }
 
-  public postRegister(username: string, firstname: string, lastname: string, password: string, token: string): Observable<APIResponse> {
+  public postRegister(username: string, firstname: string, lastname: string, password: string): Observable<APIResponse> {
     return this.http.post<APIResponse>(
       `${baseString}/register/admin`, {
         'username': username,

@@ -1,60 +1,71 @@
-import { Component, AfterViewInit } from '@angular/core';
-import * as L from 'leaflet';
+import { Component, OnInit } from "@angular/core";
+import * as Leaflet from 'leaflet'
+import 'leaflet-routing-machine'
+import { AffectedAreaService } from "./affected-area.service";
+import { APIResponse } from "../../../../response/api.response";
 
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.css']
 })
-export class MapComponent implements AfterViewInit {
+export class MapComponent implements OnInit {
+  private map: Leaflet.Map = null!
+  private defaultLocation: Leaflet.LatLng = new Leaflet.LatLng(8.5241, 76.9366)
+  private defaultZoom: number = 14
+  private icons: Map<string, Leaflet.Icon> = new Map<string, Leaflet.Icon>
+  private followUser: boolean = true
+  private userLocationMarker: Leaflet.Marker = Leaflet.marker(this.defaultLocation)
 
-  private map!: L.Map;
+  public constructor(private service: AffectedAreaService) {}
 
-  constructor() { }
+  public ngOnInit(): void {
+    this.addIcons()
+    this.map = Leaflet.map('map').setView(this.defaultLocation, this.defaultZoom)
 
-  ngAfterViewInit(): void {
-    this.initMap();
-  }
+    setInterval(() => {
+      this.getCurrentLocation()
+      .then((location: Leaflet.LatLng) => {
+          if (location.distanceTo(this.userLocationMarker.getLatLng()) <= 10)
+              return
 
-  private initMap(): void {
-    this.map = L.map('map', {
-      center: [18.504620, 1159.235129],
-      zoom: 5
-    });
+          this.userLocationMarker.remove()
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '© OpenStreetMap contributors'
-    }).addTo(this.map);
+          this.userLocationMarker = Leaflet.marker(location, {
+              icon: this.icons.get('userLocation'),
+              draggable: false
+          })
+          .addTo(this.map)
+          .bindPopup(`Your location\n${location.lat}, ${location.lng}`)
 
-    this.getUserLocation();
-  }
-
-  private getUserLocation(): void {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const lat = position.coords.latitude;
-          const lon = position.coords.longitude;
-
-          this.map.setView([lat, lon], 13);
-
-          const customIcon = L.icon({
-            iconUrl: 'assets/location-marker.png', // Path to your custom marker image
-            iconSize: [32, 32], // Size of the icon
-            iconAnchor: [16, 45], // Anchor point of the icon (relative to its size)
-            popupAnchor: [0, -32] // Popup anchor point (relative to the iconAnchor)
-          });
-
-          L.marker([lat, lon], { icon: customIcon }).addTo(this.map)
-            .bindPopup('You are here!')
-            .openPopup();
-        },
-        (error) => {
-          console.error('Error getting location:', error);
-        }
-      );
-    } else {
-      console.error('Geolocation is not supported by this browser.');
+          if (this.followUser)
+              this.map.panTo(location)
+      })
+      .catch((error: any) => console.log(error))
     }
+    , 10)
+
+    Leaflet.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(this.map);
+  }
+
+  private addIcons(): void {
+    const userLocationIcon: Leaflet.Icon = Leaflet.icon({
+        iconUrl: 'assets/location-marker.png',
+        iconSize: [40, 40],
+        iconAnchor: [20, 40],
+        popupAnchor: [0, -40]
+    });
+    this.icons.set('userLocation', userLocationIcon)
+  }
+
+  private getCurrentLocation(): Promise<Leaflet.LatLng> {
+    return new Promise((resolve, reject) => {
+        navigator.geolocation.getCurrentPosition(
+            (position) => resolve(new Leaflet.LatLng(position.coords.latitude, position.coords.longitude)),
+            (error) => reject(error)
+        )
+    })
   }
 }

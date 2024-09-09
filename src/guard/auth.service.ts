@@ -10,7 +10,7 @@ export class AuthService {
   private baseString: string = 'http://localhost:5000'
   public constructor(private httpClient: HttpClient) { }
 
-  public getValidateToken(token: string): Observable<APIResponse> {
+  public getValidateToken(): Observable<APIResponse> {
     return this.httpClient.get<APIResponse>(`${this.baseString}/validate`)
   }
 }
