@@ -11,6 +11,7 @@ import { AdminRegisterComponent } from '../admin-register/admin-register.compone
 import { AdminHomeComponent } from '../admin-home/admin-home.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { AboutComponent } from './components/about/about.component';
+import { PrecautionsComponent } from './components/precautions/precautions.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { AboutComponent } from './components/about/about.component';
     AdminRegisterComponent,
     AdminHomeComponent,
     NavbarComponent,
-    AboutComponent
+    AboutComponent,
+    PrecautionsComponent
   ],
   imports: [
     BrowserModule,

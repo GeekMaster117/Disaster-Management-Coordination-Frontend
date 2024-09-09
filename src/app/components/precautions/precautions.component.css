@@ -1,0 +1,187 @@
+/* Container to ensure correct positioning and alignment */
+.container {
+    position: relative; /* Positioned relative to avoid navbar overlap */
+    top: 8vh; /* Adjust this if the navbar height changes */
+    left: 0;
+    width: calc(100vw - 20px); /* Full width minus padding */
+    height: calc(90vh - 20px); /* Full height minus padding */
+    display: flex;
+    gap: 20px; /* Gap between the scroll list and the combined card */
+    padding: 20px;
+    box-sizing: border-box; /* Include padding in width and height */
+}
+
+/* Scrollable List on the left */
+.scroll-list {
+    width: 250px; /* Fixed width for the list */
+    background-color: #f0f0f0;
+    padding: 10px;
+    border-radius: 5px;
+    box-sizing: border-box;
+    overflow-y: auto; /* Vertical scroll if needed */
+    height: 100%; /* Full height of the container */
+}
+
+/* List styles inside the scroll list */
+.scroll-list ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.scroll-list li {
+    cursor: pointer;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.scroll-list li:hover {
+    background-color: #ddd;
+}
+
+/* Highlight the selected item */
+.scroll-list li.selected {
+    background-color: #007bff; /* Highlight color */
+    border-radius: 5px;
+    color: white; /* Text color for selected item */
+}
+
+/* Combined Card containing Dos & Don'ts and Videos */
+.combined-card {
+    flex: 1; /* Take up the remaining space */
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    border-radius: 10px; /* Rounded corners for the card */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    height: 100%;
+    width: calc(100% - 270px); /* Adjust width to fit the remaining space */
+}
+
+/* Card header styling */
+.card-header {
+    background-color: white; 
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    text-align: center; /* Center-align text */
+    color: black;
+}
+
+/* Card body styling */
+.card-body {
+    display: flex;
+    flex: 1; /* Fill the available height */
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* Instructions content layout */
+.instructions-content {
+    display: flex;
+    flex: 1; /* Fill the available space */
+    gap: 20px; /* Gap between Dos & Don'ts and Videos sections */
+    width: 100%;
+}
+
+/* Dos & Don'ts section styling */
+.dos-donts {
+    flex: 1; /* Takes up half of the combined card width */
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid #ddd;
+}
+
+/* Dos & Don'ts headings */
+.dos-donts h4 {
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 5px;
+    font-weight: 500;
+    display: flex;
+    align-items: center; /* Center align icon and text */
+}
+
+
+/* List item styling for Dos & Don'ts */
+.dos-donts ul {
+    padding-left: 20px; /* Indent list items */
+    margin: 0;
+}
+
+
+
+.dos-donts li {
+    display: flex;
+    align-items: center; /* Center align icon and text */
+    margin-bottom: 10px;
+    font-size: 0.9rem; /* Adjusted font size */
+}
+
+.dos-donts li img {
+    margin-right: 10px; /* Space between icon and text */
+}
+
+/* Videos section styling */
+.videos {
+    flex: 1; /* Takes up half of the combined card width */
+    display: flex;
+    flex-direction: column;
+}
+
+/* Video grid styling within the card */
+.video-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Two columns */
+    gap: 10px; /* Gap between video items */
+    padding: 10px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.video-item {
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.video-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+  }
+
+.video-item iframe {
+    width: 100%;
+    height: 170px; /* Ensure the iframe height fits well within the card */
+}
+
+.video-item p {
+    padding: 10px;
+    text-align: center;
+}
+
+h3 {
+    color: rgb(57, 57, 57);
+    font-weight: 500;
+    margin: 0;
+}
+
+h4 {
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 5px;
+    font-weight: 500;
+    display: flex;
+    align-items: center; /* Center align icon and text */
+}
+
+/* Icon styling */
+.icon {
+    width: 16px; /* Small size for the icons */
+    height: 16px;
+    vertical-align: middle; /* Align with text */
+    margin-right: 8px; 
+}
