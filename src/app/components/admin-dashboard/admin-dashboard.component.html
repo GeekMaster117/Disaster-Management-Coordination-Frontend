@@ -1,0 +1,148 @@
+<div class="container-fluid">
+    <div class="row">
+      <!-- Column 1 (30%) -->
+      <div class="col-md-4">
+        <!-- Card 1: Add Refugee Camp -->
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Add Refugee Camp</h5>
+            <form>
+              <div class="form-group">
+                <label for="refugeeLatitude">Latitude</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="refugeeLatitude"
+                  placeholder="Enter latitude"
+                  [(ngModel)]="refugeeCampLatitude"
+                  name="refugeeLatitude"
+                />
+              </div>
+              <div class="form-group">
+                <label for="refugeeLongitude">Longitude</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="refugeeLongitude"
+                  placeholder="Enter longitude"
+                  [(ngModel)]="refugeeCampLongitude"
+                  name="refugeeLongitude"
+                />
+              </div>
+              <button
+                type="button"
+                class="btn btn-primary"
+                (click)="addRefugeeCamp()"
+              >
+                Add
+              </button>
+            </form>
+          </div>
+        </div>
+  
+        <!-- Card 2: Add Affected Area -->
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Add Affected Area</h5>
+            <form>
+              <div class="form-group">
+                <label for="affectedLatitude">Latitude</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="affectedLatitude"
+                  placeholder="Enter latitude"
+                  [(ngModel)]="affectedAreaLatitude"
+                  name="affectedLatitude"
+                />
+              </div>
+              <div class="form-group">
+                <label for="affectedLongitude">Longitude</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="affectedLongitude"
+                  placeholder="Enter longitude"
+                  [(ngModel)]="affectedAreaLongitude"
+                  name="affectedLongitude"
+                />
+              </div>
+              <div class="form-group">
+                <label for="radius">Radius</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="radius"
+                  placeholder="Enter radius"
+                  [(ngModel)]="affectedAreaRadius"
+                  name="radius"
+                />
+              </div>
+              <div class="form-group">
+                <label for="severity">Severity</label>
+                <select
+                  class="form-control"
+                  id="severity"
+                  [(ngModel)]="affectedAreaSeverity"
+                  name="severity"
+                >
+                  <option value="" disabled selected>Select severity</option>
+                  <option value="low">Moderate</option>
+                  <option value="medium">High</option>
+                  <option value="high">Severe</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="disasterType">Disaster Type</label>
+                <select
+                  class="form-control"
+                  id="disasterType"
+                  [(ngModel)]="disasterType"
+                  name="disasterType"
+                >
+                  <option value="" disabled selected>Select disaster type</option>
+                  <option value="flood">Flood</option>
+                  <option value="earthquake">Earthquake</option>
+                  <option value="fire">Fire</option>
+                  <option value="addAffectedArea">Cyclone</option>
+                  <option value="addAffectedArea">Tsunami</option>
+                </select>
+              </div>
+              <button
+                type="button"
+                class="btn btn-danger"
+                (click)="addAffectedArea()"
+              >
+                Add Affected Area
+              </button>
+            </form>
+          </div>
+        </div>
+  
+        <!-- Additional Cards -->
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Future Component 1</h5>
+            <!-- Content goes here -->
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Future Component 2</h5>
+            <!-- Content goes here -->
+          </div>
+        </div>
+      </div>
+  
+      <!-- Column 2 (70%) -->
+      <div class="col-md-8">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Map View</h5>
+            <div id="map" class="map-container"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

@@ -1,6 +1,8 @@
+
+
 .about-container {
     padding: 20px;
-    max-width: 1200px;
+    max-width: 1400px;
     margin: auto;
     margin-top: 8vh; /* Margin to ensure the component appears below the navbar */
   }

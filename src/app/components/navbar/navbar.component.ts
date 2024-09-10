@@ -1,5 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
-import { SideMenuComponent } from './side-menu/side-menu.component'
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-navbar',
@@ -7,8 +6,13 @@ import { SideMenuComponent } from './side-menu/side-menu.component'
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent {
-  @ViewChild(SideMenuComponent) sideMenu!: SideMenuComponent;
+  navbarOpen = false;
 
-  onSideMenuClose(): void {
+  toggleNavbar() {
+    this.navbarOpen = !this.navbarOpen;
+  }
+
+  closeNavbar() {
+    this.navbarOpen = false;  // Close the navbar after clicking a link
   }
 }

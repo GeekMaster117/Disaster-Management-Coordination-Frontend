@@ -1,28 +1,29 @@
-/* Container to ensure correct positioning and alignment */
+/* General Container Styles */
 .container {
-    position: relative; /* Positioned relative to avoid navbar overlap */
-    top: 8vh; /* Adjust this if the navbar height changes */
+    position: relative;
+    top: 8vh;
     left: 0;
-    width: calc(100vw - 20px); /* Full width minus padding */
-    height: calc(90vh - 20px); /* Full height minus padding */
+    width: calc(100vw - 20px);
+    height: calc(90vh - 20px);
     display: flex;
-    gap: 20px; /* Gap between the scroll list and the combined card */
+    gap: 20px;
     padding: 20px;
-    box-sizing: border-box; /* Include padding in width and height */
+    box-sizing: border-box;
+    overflow: hidden; /* Ensure no overflow */
 }
 
-/* Scrollable List on the left */
+/* Scrollable List */
 .scroll-list {
-    width: 250px; /* Fixed width for the list */
+    width: 250px;
     background-color: #f0f0f0;
     padding: 10px;
     border-radius: 5px;
     box-sizing: border-box;
-    overflow-y: auto; /* Vertical scroll if needed */
-    height: 100%; /* Full height of the container */
+    overflow-y: auto;
+    height: 100%;
 }
 
-/* List styles inside the scroll list */
+/* List Styles */
 .scroll-list ul {
     list-style-type: none;
     padding: 0;
@@ -40,103 +41,116 @@
     background-color: #ddd;
 }
 
-/* Highlight the selected item */
 .scroll-list li.selected {
-    background-color: #007bff; /* Highlight color */
+    background-color: #007bff;
     border-radius: 5px;
-    color: white; /* Text color for selected item */
+    color: white;
 }
 
-/* Combined Card containing Dos & Don'ts and Videos */
+/* Combined Card */
 .combined-card {
-    flex: 1; /* Take up the remaining space */
+    flex: 1;
     display: flex;
     flex-direction: column;
     background-color: white;
-    border-radius: 10px; /* Rounded corners for the card */
+    border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     overflow: hidden;
     height: 100%;
-    width: calc(100% - 270px); /* Adjust width to fit the remaining space */
+    width: calc(100% - 270px);
 }
 
-/* Card header styling */
+/* Card Header */
 .card-header {
-    background-color: white; 
-    padding: 10px;
+    background-color: #f8f9fa;
+    padding: 15px;
     border-bottom: 1px solid #ddd;
-    text-align: center; /* Center-align text */
+    text-align: center;
     color: black;
 }
 
-/* Card body styling */
+.card-header h3 {
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+/* Card Body */
 .card-body {
     display: flex;
-    flex: 1; /* Fill the available height */
+    flex: 1;
     padding: 20px;
     box-sizing: border-box;
+    overflow: hidden;
 }
 
-/* Instructions content layout */
-.instructions-content {
+/* Dos & Don'ts Card */
+.dos-donts-card {
+    flex: 1;
     display: flex;
-    flex: 1; /* Fill the available space */
-    gap: 20px; /* Gap between Dos & Don'ts and Videos sections */
-    width: 100%;
+    flex-direction: column;
+    margin-right: 20px;
 }
 
-/* Dos & Don'ts section styling */
+/* Dos & Don'ts Section */
 .dos-donts {
-    flex: 1; /* Takes up half of the combined card width */
+    flex: 1;
     display: flex;
     flex-direction: column;
     border-right: 1px solid #ddd;
+    padding-right: 20px;
+    overflow-y: auto; /* Enable scrolling if needed */
 }
 
-/* Dos & Don'ts headings */
 .dos-donts h4 {
     margin: 10px 0;
     padding: 10px;
     border-radius: 5px;
     font-weight: 500;
     display: flex;
-    align-items: center; /* Center align icon and text */
+    align-items: center;
 }
 
-
-/* List item styling for Dos & Don'ts */
 .dos-donts ul {
-    padding-left: 20px; /* Indent list items */
+    padding-left: 20px;
     margin: 0;
 }
 
-
-
 .dos-donts li {
     display: flex;
-    align-items: center; /* Center align icon and text */
+    align-items: center;
     margin-bottom: 10px;
-    font-size: 0.9rem; /* Adjusted font size */
+    font-size: 0.9rem;
 }
 
 .dos-donts li img {
-    margin-right: 10px; /* Space between icon and text */
+    margin-right: 10px;
 }
 
-/* Videos section styling */
-.videos {
-    flex: 1; /* Takes up half of the combined card width */
+/* Videos Card */
+.videos-card {
+    flex: 1;
     display: flex;
     flex-direction: column;
 }
 
-/* Video grid styling within the card */
+/* Videos Section */
+.videos {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* Prevents overflow issues */
+}
+
+.video-scroll-wrapper {
+    flex: 1;
+    overflow-y: auto; /* Allows scrolling if content overflows */
+}
+
 .video-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr); /* Two columns */
-    gap: 10px; /* Gap between video items */
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 10px;
     padding: 10px;
-    width: 100%;
     box-sizing: border-box;
 }
 
@@ -151,11 +165,11 @@
 .video-item:hover {
     transform: translateY(-5px);
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
-  }
+}
 
 .video-item iframe {
     width: 100%;
-    height: 170px; /* Ensure the iframe height fits well within the card */
+    height: 150px;
 }
 
 .video-item p {
@@ -163,25 +177,104 @@
     text-align: center;
 }
 
-h3 {
+/* Pagination Styles */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.page-dots {
+    display: flex;
+    gap: 10px;
+}
+
+.page-dots div {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: #ddd;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.page-dots div.active {
+    background-color: #007bff;
+}
+
+/* Headings */
+h3, h4 {
     color: rgb(57, 57, 57);
     font-weight: 500;
-    margin: 0;
 }
 
-h4 {
-    margin: 10px 0;
-    padding: 10px;
-    border-radius: 5px;
-    font-weight: 500;
-    display: flex;
-    align-items: center; /* Center align icon and text */
-}
-
-/* Icon styling */
 .icon {
-    width: 16px; /* Small size for the icons */
+    width: 16px;
     height: 16px;
-    vertical-align: middle; /* Align with text */
-    margin-right: 8px; 
+    vertical-align: middle;
+    margin-right: 8px;
+}
+
+/* Responsive Styles */
+@media (max-width: 1200px) {
+    .container {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .combined-card {
+        width: 100%;
+    }
+
+    .scroll-list {
+        width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+        gap: 10px;
+        top: vh;
+        padding: 10px;
+    }
+
+    .scroll-list {
+        width: 100%;
+        height: auto;
+        max-height: 300px; /* Limit height on smaller screens */
+    }
+
+    .combined-card {
+        width: 100%;
+    }
+
+    .dos-donts {
+        padding-right: 10px;
+        border-right: none;
+    }
+
+    .dos-donts-card {
+        margin-right: 0;
+        margin-bottom: 20px;
+    }
+
+    .videos-card {
+        margin-bottom: 20px;
+    }
+
+    .video-item iframe {
+        height: 100px; /* Smaller video height for mobile */
+    }
+}
+
+@media (max-width: 576px) {
+    .video-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .video-item iframe {
+        height: 80px; /* Even smaller video height for very small screens */
+    }
 }

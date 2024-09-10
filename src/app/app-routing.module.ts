@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, Component } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { AdminLoginComponent } from '../admin-login/admin-login.component';
@@ -8,6 +8,7 @@ import { AdminHomeComponent } from '../admin-home/admin-home.component';
 import { AboutComponent } from './components/about/about.component';
 import { PrecautionsComponent } from './components/precautions/precautions.component';
 import { DashboardComponent } from './components/dashboard/dashboard/dashboard.component';
+import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard.component';
 
 const routes: Routes = [
   {
@@ -47,6 +48,10 @@ const routes: Routes = [
     redirectTo: 'dashboard', 
     pathMatch: 'full' 
   },
+  {
+    path: 'admin/dashboard',
+    component: AdminDashboardComponent
+  }
 ];
 
 @NgModule({

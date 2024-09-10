@@ -1,38 +1,133 @@
+@import url('https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css');
+
 :host {
-    display: block;
-    position: relative;
+  font-family: "Work Sans", sans-serif;
+  background-color: #f0f0f0;
 }
 
 .navbar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 1050; /* Ensure the navbar is below the side menu but above other content */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    height: 8vh;
-    display: flex;
-    align-items: flex-end;
-    flex-direction: column-reverse;
-    
-
-}
-
-.nav-item {
-    font-size: larger;
-    margin-right: 3vh;
-    font-weight: 500;
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  padding: 10px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(17, 25, 40, 0.75);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1100;
+  transition: background 0.3s ease;
 }
 
 .navbar-toggler {
-    position: absolute;
-    left: 15px; /* Position toggle button to the left */
-    top: 15px; /* Adjust based on your design */
-    z-index: 1060; /* Ensure the toggle button is above the side menu */
+  display: none;
+  font-size: 36px;
+  color: white;
 }
 
-@media (min-width: 992px) {
-    .side-menu {
-        display: none;
-    }
+.logo a {
+  font-size: 22px;
+  color: #fff;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+}
+
+.nav-links ul {
+  display: flex;
+  gap: 20px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-links ul li a {
+  color: #fff;
+  font-size: 17px;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 7px; /* Space between icon and text */
+  padding: 5px 0;
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+.nav-links ul li a i {
+  font-size: 1.3rem; /* Size of the icon */
+  font-weight: 300; /* Font weight of the icon */
+}
+
+.nav-links ul li a::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: #00aaff; /* Blue underline */
+  transition: width 0.4s ease;
+}
+
+/* Underline the active link */
+.nav-links ul li a.active::after {
+  width: 100%; /* Full underline for active link */
+}
+
+.nav-links ul li a.active {
+}
+
+.nav-links ul li a:hover::after {
+  width: 100%;
+}
+
+.nav-links ul li a:hover {
+  color: rgb(77, 175, 255);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .navbar {
+    padding: 10px 20px;
+    width: 100%;
+    left: 0;
+    transform: none;
+  }
+
+  .navbar-toggler {
+    display: block;
+    color: white;
+  }
+
+  .nav-links {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    display: none;
+    background: rgba(17, 25, 40, 0.85);
+    backdrop-filter: blur(1300px) saturate(180%);
+    -webkit-backdrop-filter: blur(30px) saturate(180%);
+  }
+
+  .nav-links.active {
+    display: block;
+  }
+
+  .nav-links ul {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .nav-links ul li a {
+    margin: 10px 0;
+  }
 }

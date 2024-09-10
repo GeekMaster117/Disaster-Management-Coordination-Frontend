@@ -4,19 +4,27 @@
 }
 
 .card {
-    width: 600px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    background: #fff;
+    width: 100%; /* Full width on mobile */
+    max-width: 600px; /* Max width for larger screens */
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    background-color: rgba(255, 255, 255, 0.75);
+    border-radius: 12px;
     cursor: default; /* Use default pointer */
     display: flex;
     flex-direction: column;
     position: absolute;
-    top: 80px;
+    top: 80px; /* Adjust according to the height of your navbar */
     right: 20px;
     z-index: 1070; /* Ensure the card is above the navbar but below the side menu */
     transition: height 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add shadow for better visibility */
+}
+
+/* Card constraints */
+.card {
+    /* Ensure it doesn't go below the navbar */
+    max-height: calc(100vh - 80px); /* Adjust according to the height of your navbar */
 }
 
 .card.collapsed {
@@ -26,6 +34,7 @@
 .card-body {
     padding: 10px;
     display: flex;
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
     transition: opacity 0.3s ease, max-height 0.3s ease;
     opacity: 1;
     max-height: 120px;
@@ -70,7 +79,6 @@
     content: '▲';
 }
 
-
 .grid-container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
@@ -103,4 +111,11 @@
 
 .low-severity {
     color: #5bc0de;
+}
+
+@media (max-width: 768px) {
+    .card {
+        width: 90%; /* Adjust for mobile screens */
+        right: 5%; /* Center it horizontally */
+    }
 }
