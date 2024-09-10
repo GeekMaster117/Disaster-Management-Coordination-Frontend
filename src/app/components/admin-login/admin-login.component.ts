@@ -51,6 +51,7 @@ export class AdminLoginComponent implements OnInit {
         this.service.postLogin(username.value, password.value)
         .subscribe({
             next: (data: APIResponse) => {
+                console.log(data)
                 localStorage.setItem('token', data.message.token)
                 localStorage.setItem('tokenExpiry', data.message.expiry)
                 this.router.navigate(['admin/home'])
