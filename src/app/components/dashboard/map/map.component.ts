@@ -1,122 +1,195 @@
-import { Component, AfterViewInit } from '@angular/core';
-import * as L from 'leaflet';
-import { HttpClient } from '@angular/common/http';
+import { Component, OnInit } from "@angular/core";
+import * as Leaflet from 'leaflet'
+import 'leaflet-routing-machine'
+import { AffectedAreaService } from "./affected-area.service";
+import * as SignalR from '@microsoft/signalr'
+import { APIResponse } from "../../../../response/api.response";
+import { baseString } from "../../../../urls/basestring.url";
+import { RefugeeCampService } from "./refugee-camp.service";
 
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.css']
 })
-export class MapComponent implements AfterViewInit {
+export class MapComponent implements OnInit {
+  private map: Leaflet.Map = null!
+  private defaultLocation: Leaflet.LatLng = new Leaflet.LatLng(8.5241, 76.9366)
+  private defaultZoom: number = 14
 
-  private map!: L.Map;
-  private markers: L.Marker[] = [];
-  private userLocation!: { lat: number, lon: number }; // Store user's location
+  private followUser: boolean = true
+  private userLocationMarker: Leaflet.Marker = Leaflet.marker(this.defaultLocation)
 
-  constructor(private http: HttpClient) { }
+  private icons: Map<string, Leaflet.Icon> = new Map<string, Leaflet.Icon>
 
-  ngAfterViewInit(): void {
-    this.initMap();
+  private connection: SignalR.HubConnection = null!
+  
+  private affectedAreasData: any[] = []
+  private affectedAreasCircle: Leaflet.Circle[] = []
+  private refugeeCampsData: any[] = []
+  private refugeeCampsMarker: Leaflet.Marker[] = []
+
+  public constructor(private areaService: AffectedAreaService, private campService: RefugeeCampService) {}
+
+  public ngOnInit(): void {
+    this.addIcons()
+    this.startSignalRConnection()
+    this.updateMapOnNotification()
+    this.initMap()
+    this.showUserLocation()
+  }
+
+  private addIcons(): void {
+    const userLocationIcon: Leaflet.Icon = Leaflet.icon({
+        iconUrl: 'assets/location-marker.png',
+        iconSize: [40, 40],
+        iconAnchor: [20, 40],
+        popupAnchor: [0, -40]
+    });
+    this.icons.set('userLocation', userLocationIcon)
+
+    const refugeeCampIcon: Leaflet.Icon = Leaflet.icon({
+      iconUrl: 'assets/camp.png',
+      iconSize: [40, 40],
+      iconAnchor: [20, 40],
+      popupAnchor: [0, -35]
+    })
+    this.icons.set('refugeeCamp', refugeeCampIcon)
+  }
+
+  private startSignalRConnection(): void {
+    this.connection = new SignalR.HubConnectionBuilder()
+    .withUrl(`${baseString}/notificationhub`)
+    .build()
+    this.connection
+    .start()
+    .catch(err => console.error('Error while starting SignalR connection: ' + err));
+  }
+
+  private updateMapOnNotification(): void {
+    this.showAllAffectedAreas()
+    this.showAllRefugeeCamps()
+    this.connection.on('DataUpdated', () => {
+      this.deleteAllAffectedAreas()
+      this.showAllAffectedAreas()
+
+      this.deleteAllRefugeeCamps()
+      this.showAllRefugeeCamps()
+    })
+    this.connection.onreconnected(() => {
+      this.deleteAllAffectedAreas()
+      this.showAllAffectedAreas()
+
+      this.deleteAllRefugeeCamps()
+      this.showAllRefugeeCamps()
+    })
   }
 
   private initMap(): void {
-    // Initialize the map without default zoom controls
-    this.map = L.map('map', {
-      center: [51.505, -0.09],
-      zoom: 13,
-      zoomControl: false
-    });
-
-    // Add OpenStreetMap tile layer
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '© OpenStreetMap contributors'
-    }).addTo(this.map);
-
-    // Add the zoom control manually and position it
-    L.control.zoom({ position: 'bottomleft' }).addTo(this.map);
-
-    // Attempt to get user location
-    this.getUserLocation();
+    this.map = Leaflet.map('map').setView(this.defaultLocation, this.defaultZoom)
+    Leaflet.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>, <a href="https://www.flaticon.com/free-icons/tent-house" title="tent house icons">Tent house icons created by VectorPortal - Flaticon</a>'
+        }).addTo(this.map);
   }
 
-  private getUserLocation(): void {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const lat = position.coords.latitude;
-          const lon = position.coords.longitude;
-          this.userLocation = { lat, lon }; // Store the user's current location
+  private showUserLocation(): void {
+    setInterval(() => {
+      this.getCurrentLocation()
+      .then((location: Leaflet.LatLng) => {
+          if (location.distanceTo(this.userLocationMarker.getLatLng()) <= 10)
+              return
 
-          this.map.setView([lat, lon], 13);
+          this.userLocationMarker.remove()
 
-          const customIcon = L.icon({
-            iconUrl: 'assets/location-marker.png',
-            iconSize: [32, 32],
-            iconAnchor: [16, 45],
-            popupAnchor: [0, -32]
-          });
+          this.userLocationMarker = Leaflet.marker(location, {
+              icon: this.icons.get('userLocation'),
+              draggable: false
+          })
+          .addTo(this.map)
+          .bindPopup(`Your location ${location.lat}, ${location.lng}`)
 
-          L.marker([lat, lon], { icon: customIcon }).addTo(this.map)
-            .bindPopup('You are here!')
-            .openPopup();
-        },
-        (error) => {
-          console.error('Error getting location:', error);
+          if (this.followUser)
+              this.map.panTo(location)
+      })
+      .catch((error: any) => console.log(error))
+    }
+    , 500)
+  }
+
+  private getCurrentLocation(): Promise<Leaflet.LatLng> {
+    return new Promise((resolve, reject) => {
+        navigator.geolocation.getCurrentPosition(
+            (position) => resolve(new Leaflet.LatLng(position.coords.latitude, position.coords.longitude)),
+            (error) => reject(error)
+        )
+    })
+  }
+
+  private showAllAffectedAreas(): void {
+    this.areaService.getAllAffectedArea()
+    .subscribe({
+      next: (data: APIResponse) => {
+        this.affectedAreasData = data.message
+      },
+      error: (errorData: any) => console.error(errorData.error.message),
+      complete: () => {
+        for (let area of this.affectedAreasData)
+        {
+          let fillColor: string = null!
+          switch(area.severity)
+          {
+            case 1: fillColor = "yellow"
+            break
+            case 2: fillColor = "orange"
+            break
+            case 3: fillColor = "red"
+            break
+          }
+          let circle: Leaflet.Circle = Leaflet.circle([area.latitude, area.longitude], {
+            radius: area.radius,
+            fillColor: fillColor,
+            fillOpacity: 0.7
+          })
+          .bindPopup(area.disasterType)
+          .openPopup()
+          .addTo(this.map)
+          this.affectedAreasCircle.push(circle)
         }
-      );
-    } else {
-      console.error('Geolocation is not supported by this browser.');
-    }
-  }
-
-  // Search function
-  onSearch(event: any): void {
-    const query = event.target.value;
-    if (query.length > 3) {
-      this.searchLocations(query);
-    }
-  }
-
-  // Function to search for places
-  private searchLocations(query: string): void {
-    // Make sure the search is close to the user's current location
-    if (!this.userLocation) {
-      console.error('User location is not available yet');
-      return;
-    }
-
-    const url = `https://nominatim.openstreetmap.org/search?q=${query}&format=json&limit=5&viewbox=${this.userLocation.lon-0.1},${this.userLocation.lat+0.1},${this.userLocation.lon+0.1},${this.userLocation.lat-0.1}&bounded=1`;
-
-    this.http.get<any[]>(url).subscribe((results) => {
-      // Clear old markers
-      this.clearMarkers();
-      const customIcon = L.icon({
-        iconUrl: 'assets/location-marker.png',
-        iconSize: [32, 32],
-        iconAnchor: [16, 45],
-        popupAnchor: [0, -32]
-      });
-
-      results.forEach((result) => {
-        const lat = parseFloat(result.lat);
-        const lon = parseFloat(result.lon);
-
-        const marker = L.marker([lat, lon], { icon: customIcon }).addTo(this.map);
-        marker.bindPopup(`<b>${result.display_name}</b>`).openPopup();
-
-        this.markers.push(marker);
-      });
-
-      if (results.length) {
-        this.map.setView([results[0].lat, results[0].lon], 14);
       }
-    });
+    })
   }
 
-  private clearMarkers(): void {
-    this.markers.forEach((marker) => {
-      this.map.removeLayer(marker);
-    });
-    this.markers = [];
+  private deleteAllAffectedAreas(): void {
+    this.affectedAreasData = []
+    for (let circle of this.affectedAreasCircle)
+      circle.remove()
+    this.affectedAreasCircle = []
+  }
+
+  private showAllRefugeeCamps(): void {
+    this.campService.getAllRefugeeCamps()
+    .subscribe({
+      next: (data: APIResponse) => this.refugeeCampsData = data.message,
+      error: (errorData: any) => console.error(errorData.error.message),
+      complete: () => {
+        for (let camp of this.refugeeCampsData)
+        {
+          let marker: Leaflet.Marker = Leaflet.marker([camp.latitude, camp.longitude], {
+            icon: this.icons.get('refugeeCamp'),
+            draggable: false
+          })
+          .bindPopup(`Camp location ${camp.latitude}, ${camp.longitude}`)
+          .addTo(this.map)
+          this.refugeeCampsMarker.push(marker)
+        }
+      }
+    })
+  }
+
+  private deleteAllRefugeeCamps(): void {
+    this.refugeeCampsData = []
+    for (let marker of this.refugeeCampsMarker)
+      marker.remove()
+    this.refugeeCampsMarker = []
   }
 }

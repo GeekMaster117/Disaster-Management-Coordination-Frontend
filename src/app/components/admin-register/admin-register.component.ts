@@ -1,13 +1,13 @@
 import { Component, OnInit } from "@angular/core";
-import { APIResponse } from "../response/api.response";
+import { APIResponse } from "../../../response/api.response";
 import { RegisterService } from "./admin-register.service";
 import { Router } from "@angular/router";
-import { AuthGuard } from "../guard/auth.guard";
+import { AuthGuard } from "../../../guard/auth.guard";
 import { FormBuilder, FormGroup } from "@angular/forms";
 import { Validators } from "@angular/forms";
-import { atLeastOneUppercaseLetter, atLeastOneLowercaseLetter, atLeastOneNumber, atLeastOneSpecialCharacter } from "../validators/passwordValidator.validator"
-import { equal } from "../validators/equal.validator";
-import { NoSpaces, onlyLetters } from "../validators/text.validator";
+import { atLeastOneUppercaseLetter, atLeastOneLowercaseLetter, atLeastOneNumber, atLeastOneSpecialCharacter } from "../../../validators/passwordValidator.validator"
+import { equal } from "../../../validators/equal.validator";
+import { NoSpaces, onlyLetters } from "../../../validators/text.validator";
 
 @Component({
     selector: 'app-register',
@@ -68,7 +68,7 @@ export class AdminRegisterComponent implements OnInit {
     }
 
     public register(username: HTMLInputElement, firstname: HTMLInputElement, lastname: HTMLInputElement, password: HTMLInputElement, confirmPassword: HTMLInputElement): void {
-        this.service.postRegister(username.value, firstname.value, lastname.value, password.value, localStorage.getItem('token')!)
+        this.service.postRegister(username.value, firstname.value, lastname.value, password.value)
         .subscribe({
             next: (data: APIResponse) => {
                 alert(`${username.value} is registered`)
