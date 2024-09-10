@@ -1,4 +1,5 @@
-<div class="container-fluid">
+<div class="dashboard-container">
+  <div class="container-fluid">
     <div class="row">
       <!-- Column 1 (30%) -->
       <div class="col-md-4">
@@ -29,17 +30,13 @@
                   name="refugeeLongitude"
                 />
               </div>
-              <button
-                type="button"
-                class="btn btn-primary"
-                (click)="addRefugeeCamp()"
-              >
+              <button type="button" class="btn btn-primary" (click)="addRefugeeCamp()">
                 Add
               </button>
             </form>
           </div>
         </div>
-  
+
         <!-- Card 2: Add Affected Area -->
         <div class="card">
           <div class="card-body">
@@ -92,57 +89,25 @@
                   <option value="high">Severe</option>
                 </select>
               </div>
-              <div class="form-group">
-                <label for="disasterType">Disaster Type</label>
-                <select
-                  class="form-control"
-                  id="disasterType"
-                  [(ngModel)]="disasterType"
-                  name="disasterType"
-                >
-                  <option value="" disabled selected>Select disaster type</option>
-                  <option value="flood">Flood</option>
-                  <option value="earthquake">Earthquake</option>
-                  <option value="fire">Fire</option>
-                  <option value="addAffectedArea">Cyclone</option>
-                  <option value="addAffectedArea">Tsunami</option>
-                </select>
-              </div>
-              <button
-                type="button"
-                class="btn btn-danger"
-                (click)="addAffectedArea()"
-              >
-                Add Affected Area
+              <button type="button" class="btn btn-danger" (click)="addAffectedArea()">
+                Add
               </button>
             </form>
           </div>
         </div>
-  
-        <!-- Additional Cards -->
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">Future Component 1</h5>
-            <!-- Content goes here -->
-          </div>
-        </div>
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">Future Component 2</h5>
-            <!-- Content goes here -->
-          </div>
-        </div>
       </div>
-  
+
       <!-- Column 2 (70%) -->
       <div class="col-md-8">
         <div class="card">
           <div class="card-body">
-            <h5 class="card-title">Map View</h5>
-            <div id="map" class="map-container"></div>
+            <div id="map"><app-map></app-map></div>
           </div>
         </div>
       </div>
     </div>
   </div>
+</div>
+<body background="red">
   
+</body>
