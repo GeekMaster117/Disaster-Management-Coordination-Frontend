@@ -3,7 +3,7 @@
     <div class="row">
       <!-- Column 1 (30%) -->
       <div class="col-md-4">
-        <!-- Card 1: Add Refugee Camp -->
+        <!-- Card: Add Refugee Camp -->
         <div class="card">
           <div class="card-body">
             <h5 class="card-title">Add Refugee Camp</h5>
@@ -37,7 +37,7 @@
           </div>
         </div>
 
-        <!-- Card 2: Add Affected Area -->
+        <!-- Card: Add Affected Area -->
         <div class="card">
           <div class="card-body">
             <h5 class="card-title">Add Affected Area</h5>
@@ -99,15 +99,49 @@
 
       <!-- Column 2 (70%) -->
       <div class="col-md-8">
+        <!-- Map Card -->
         <div class="card">
           <div class="card-body">
             <div id="map"><app-map></app-map></div>
+          </div>
+        </div>
+        
+        <!-- Card: Refugee Camps List -->
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Refugee Camps List</h5>
+            <div class="scrollable-list">
+              <div class="list-item" *ngFor="let camp of refugeeCamps">
+                <div class="item-content">
+                  <p>Latitude: {{camp.latitude}} | Longitude: {{camp.longitude}}</p>
+                </div>
+                <div class="item-actions">
+                  <button class="btn btn-primary btn-sm" (click)="updateCamp(camp.id)">Update</button>
+                  <button class="btn btn-danger btn-sm" (click)="deleteCamp(camp.id)">Delete</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card: Affected Areas List -->
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Affected Areas List</h5>
+            <div class="scrollable-list">
+              <div class="list-item" *ngFor="let area of affectedAreas">
+                <div class="item-content">
+                  <p>Latitude: {{area.latitude}} | Longitude: {{area.longitude}} | Radius: {{area.radius}} | Severity: {{area.severity}} | Disaster Type: {{area.disasterType}}</p>
+                </div>
+                <div class="item-actions">
+                  <button class="btn btn-primary btn-sm" (click)="updateArea(area.id)">Update</button>
+                  <button class="btn btn-danger btn-sm" (click)="deleteArea(area.id)">Delete</button>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
 </div>
-<body background="red">
-  
-</body>

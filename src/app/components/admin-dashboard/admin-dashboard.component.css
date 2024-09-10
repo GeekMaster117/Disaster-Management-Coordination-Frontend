@@ -3,7 +3,6 @@ html {
   margin: 0;
   padding: 0;
   font-family: 'Montserrat', sans-serif;
-  background-color: red;
 }
 
 .dashboard-container {
@@ -88,6 +87,10 @@ select.form-control option:disabled {
   color: lightgray;
 }
 
+p{
+  color: white;
+}
+
 /* Button Styles */
 .btn {
   width: 100%;
@@ -122,6 +125,66 @@ select.form-control option:disabled {
   border-radius: 10px;
 }
 
+/* Scrollable List Styles */
+/* Scrollable List Styles */
+.scrollable-list {
+  max-height: 300px;
+  overflow-y: auto;
+  padding-right: 10px; /* Ensure content isn't hidden behind the scrollbar */
+}
+
+/* Webkit Browsers (Chrome, Safari) */
+.scrollable-list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.scrollable-list::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1); /* Light grey track */
+}
+
+.scrollable-list::-webkit-scrollbar-thumb {
+  background: #767676; /* Blue thumb */
+  border-radius: 10px;
+}
+
+.scrollable-list::-webkit-scrollbar-thumb:hover {
+  background: rgb(86, 86, 86); /* Darker blue when hovered */
+}
+
+/* Firefox */
+.scrollable-list {
+  scrollbar-width: thin; /* Makes the scrollbar thin */
+  scrollbar-color: #ffffff rgba(0, 0, 0, 0.1); /* Blue thumb, light grey track */
+}
+
+/* Edge */
+.scrollable-list {
+  -ms-overflow-style: scrollbar; /* Ensures scrollbar appears in Edge */
+}
+
+
+.list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-bottom: 1px solid #4b5663;
+}
+
+.item-content {
+  flex: 1;
+}
+
+.item-actions {
+  display: flex;
+  gap: 5px;
+}
+
+.item-actions .btn {
+  padding: 5px;
+}
+
 /* Responsive Styles */
 @media (max-width: 768px) {
   .col-md-4,
@@ -133,4 +196,4 @@ select.form-control option:disabled {
   .container-fluid {
     padding: 10px;
   }
-} 
+}
