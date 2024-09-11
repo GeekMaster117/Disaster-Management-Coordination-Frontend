@@ -204,4 +204,5 @@ export class MapComponent implements OnInit {
       marker.remove()
     this.refugeeCampsMarker = []
   }
+  
 }

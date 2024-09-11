@@ -21,6 +21,7 @@ import { EarthquakeHeadlinesComponent } from './components/dashboard/earthquake-
 import { MapComponent } from './components/dashboard/map/map.component';
 import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
+import { FooterComponent } from './components/footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
     EarthquakeHeadlinesComponent,
     MapComponent,
     AdminDashboardComponent,
-    NotFoundComponent 
+    NotFoundComponent,
+    FooterComponent 
   ],
   imports: [
     BrowserModule,

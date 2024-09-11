@@ -1,0 +1,41 @@
+.footer {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-top: 1px solid #e9ecef;
+    bottom: 0;
+    width: 100%;
+  }
+  
+  .footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .footer-left {
+    display: flex;
+    align-items: center;
+  }
+  
+  .footer-logo {
+    width: 50px;
+    height: auto;
+    margin-right: 10px;
+  }
+  
+  .footer-title {
+    font-size: 18px;
+    font-weight: bold;
+  }
+  
+  .footer-right {
+    text-align: right;
+  }
+  
+  .footer-right p {
+    margin: 0;
+    font-size: 14px;
+  }
+  

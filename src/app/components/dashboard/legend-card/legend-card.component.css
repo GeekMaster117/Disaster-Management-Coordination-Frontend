@@ -63,6 +63,8 @@
     display: flex;
     justify-content: left; /* Center the text */
     padding-left: 24px;
+    padding-top: 10px;
+
     align-items: center;
 }
 

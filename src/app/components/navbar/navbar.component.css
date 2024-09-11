@@ -1,5 +1,3 @@
-@import url('https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css');
-
 :host {
   font-family: "Work Sans", sans-serif;
   background-color: #f0f0f0;
@@ -29,11 +27,24 @@
   color: white;
 }
 
+.logo {
+  display: flex;
+  align-items: center;
+}
+
+.logo img {
+  width: 40px; /* Adjust based on your logo size */
+  height: auto;
+  margin-right: 10px; /* Space between the logo and the text */
+}
+
 .logo a {
   font-size: 22px;
   color: #fff;
   font-weight: 500;
   text-decoration: none;
+  display: flex;
+  align-items: center;
 }
 
 .nav-links {
@@ -80,9 +91,6 @@
 /* Underline the active link */
 .nav-links ul li a.active::after {
   width: 100%; /* Full underline for active link */
-}
-
-.nav-links ul li a.active {
 }
 
 .nav-links ul li a:hover::after {
