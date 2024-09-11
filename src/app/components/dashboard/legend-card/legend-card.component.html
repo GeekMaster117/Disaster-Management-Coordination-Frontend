@@ -1,12 +1,33 @@
 <div cdkDrag #card class="card" [ngClass]="{ 'collapsed': isCollapsed }">
     <div class="card-header">
-        Legends
+        <h5>Legend</h5>
         <button class="toggle-btn" (click)="toggleCard()">
-            <span [ngClass]="{ 'icon-chevron-down': !isCollapsed, 'icon-chevron-up': isCollapsed }"></span>
+            <mat-icon [ngClass]="{ 'visible': !isCollapsed, 'hide': isCollapsed }" class="eye-icon">
+                {{ isCollapsed ? 'visibility_on' : 'visibility_off' }}
+            </mat-icon>
         </button>
     </div>
     <div class="card-body">
-        <img src="assets/legend.png" alt="Legends" style="width: 100%; height: 100%;">
+        <div class="legend-grid">
+            <div class="legend-item">
+                <span>🔰 Refugee Camp</span>
+            </div>
+            <div class="legend-item">
+                <span>🔵 Your Location</span>
+            </div>
+            <div class="legend-item">
+                <span>🏥 Hospital</span>
+            </div>
+            <div class="legend-item">
+                <span>👮‍♂️ Police Station</span>
+            </div>
+            <div class="legend-item">
+                <span>🔥 Fire Station</span>
+            </div>
+            <div class="legend-item">
+                <span>💉 Clinic</span>
+            </div>
+        </div>
     </div>
 </div>
-
+    

@@ -86,10 +86,22 @@ export class MapComponent implements OnInit {
   }
 
   private initMap(): void {
-    this.map = Leaflet.map('map').setView(this.defaultLocation, this.defaultZoom)
+    this.map = Leaflet.map('map', {
+      center: this.defaultLocation,
+      zoom: this.defaultZoom,
+      zoomControl: false
+    }).setView(this.defaultLocation, this.defaultZoom)
+    
     Leaflet.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>, <a href="https://www.flaticon.com/free-icons/tent-house" title="tent house icons">Tent house icons created by VectorPortal - Flaticon</a>'
         }).addTo(this.map);
+
+        const zoomControl:any = new Leaflet.Control.Zoom({ position: 'bottomleft' }).addTo(this.map); 
+
+        // Access the zoom control container and apply styles
+        const zoomControlContainer = zoomControl.getContainer();
+        zoomControlContainer.style.marginBottom = '50px'; // Adjust the margin as needed
+        
   }
 
   private showUserLocation(): void {

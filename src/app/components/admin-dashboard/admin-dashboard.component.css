@@ -97,6 +97,11 @@ p{
   padding: 10px;
   border-radius: 5px;
   font-weight: bold;
+  height: 35px;
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  align-items: center;     /* Center vertically */
+  text-align: center;
 }
 
 .btn-primary {
