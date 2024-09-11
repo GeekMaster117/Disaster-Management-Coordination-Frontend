@@ -10,7 +10,7 @@ import { RefugeeCampService } from "./refugee-camp.service";
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
-  styleUrls: ['./map.component.css']
+  styleUrl: './map.component.css'
 })
 export class MapComponent implements OnInit {
   private map: Leaflet.Map = null!
@@ -18,7 +18,7 @@ export class MapComponent implements OnInit {
   private defaultZoom: number = 14
 
   private followUser: boolean = true
-  private userLocationMarker: Leaflet.Marker = Leaflet.marker(this.defaultLocation)
+  private userLocationMarker: Leaflet.Marker = null!
 
   private icons: Map<string, Leaflet.Icon> = new Map<string, Leaflet.Icon>
 
@@ -28,6 +28,8 @@ export class MapComponent implements OnInit {
   private affectedAreasCircle: Leaflet.Circle[] = []
   private refugeeCampsData: any[] = []
   private refugeeCampsMarker: Leaflet.Marker[] = []
+
+  private routeLayer: Leaflet.Routing.Line | null = null
 
   public constructor(private areaService: AffectedAreaService, private campService: RefugeeCampService) {}
 
@@ -94,24 +96,35 @@ export class MapComponent implements OnInit {
     
     Leaflet.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>, <a href="https://www.flaticon.com/free-icons/tent-house" title="tent house icons">Tent house icons created by VectorPortal - Flaticon</a>'
-        }).addTo(this.map);
+        })
+        .addTo(this.map);
+    this.map.on('click', () => this.deleteLine())
 
-        const zoomControl:any = new Leaflet.Control.Zoom({ position: 'bottomleft' }).addTo(this.map); 
+    const zoomControl:any = new Leaflet.Control.Zoom({ position: 'bottomleft' }).addTo(this.map); 
 
-        // Access the zoom control container and apply styles
-        const zoomControlContainer = zoomControl.getContainer();
-        zoomControlContainer.style.marginBottom = '50px'; // Adjust the margin as needed
+    const zoomControlContainer = zoomControl.getContainer();
+    zoomControlContainer.style.marginBottom = '50px'; // Adjust the margin as needed
         
   }
 
-  private showUserLocation(): void {
-    setInterval(() => {
-      this.getCurrentLocation()
+  private deleteLine(): void {
+    if (this.routeLayer)
+    {
+      console.log('Removing route layer');
+      this.routeLayer = null
+    }
+  }
+
+  private async showUserLocation(): Promise<void> {
+    while(true)
+    {
+      await this.getCurrentLocation()
       .then((location: Leaflet.LatLng) => {
-          if (location.distanceTo(this.userLocationMarker.getLatLng()) <= 10)
+          if (this.userLocationMarker && location.distanceTo(this.userLocationMarker.getLatLng()) <= 10)
               return
 
-          this.userLocationMarker.remove()
+          if (this.userLocationMarker)
+            this.userLocationMarker.remove()
 
           this.userLocationMarker = Leaflet.marker(location, {
               icon: this.icons.get('userLocation'),
@@ -125,7 +138,6 @@ export class MapComponent implements OnInit {
       })
       .catch((error: any) => console.log(error))
     }
-    , 500)
   }
 
   private getCurrentLocation(): Promise<Leaflet.LatLng> {
@@ -190,6 +202,12 @@ export class MapComponent implements OnInit {
             icon: this.icons.get('refugeeCamp'),
             draggable: false
           })
+          .on('click', (event: Leaflet.LeafletMouseEvent) => {
+            this.showRoute(
+              this.userLocationMarker.getLatLng(),
+              Leaflet.latLng(camp.latitude, camp.longitude)
+            )
+          })
           .bindPopup(`Camp location ${camp.latitude}, ${camp.longitude}`)
           .addTo(this.map)
           this.refugeeCampsMarker.push(marker)
@@ -204,5 +222,24 @@ export class MapComponent implements OnInit {
       marker.remove()
     this.refugeeCampsMarker = []
   }
-  
+
+  private showRoute(from: Leaflet.LatLng, to: Leaflet.LatLng): void {
+    if (!this.userLocationMarker)
+      return
+    (Leaflet.Routing.osrmv1() as any).route([
+    Leaflet.Routing.waypoint(from),
+    Leaflet.Routing.waypoint(to)
+    ], (error: any, routes: any) => {
+      if (error)
+      {
+        console.log(error)
+        return
+      }
+      if (this.routeLayer)
+        this.routeLayer.remove()
+      this.routeLayer = Leaflet.Routing
+      .line(routes[0])
+      .addTo(this.map)
+    })
+  }
 }
