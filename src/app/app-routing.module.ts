@@ -9,6 +9,7 @@ import { AboutComponent } from './components/about/about.component';
 import { PrecautionsComponent } from './components/precautions/precautions.component';
 import { DashboardComponent } from './components/dashboard/dashboard/dashboard.component';
 import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard.component';
+import { NotFoundComponent } from './components/not-found/not-found.component';
 
 const routes: Routes = [
   {
@@ -51,7 +52,9 @@ const routes: Routes = [
   {
     path: 'admin/dashboard',
     component: AdminDashboardComponent
-  }
+  },
+  { path: 'not-found', component: NotFoundComponent },
+  { path: '**', redirectTo: '/not-found' } 
 ];
 
 @NgModule({

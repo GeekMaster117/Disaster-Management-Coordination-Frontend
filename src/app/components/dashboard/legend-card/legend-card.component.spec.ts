@@ -1,23 +1,37 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { Component, HostListener, ViewChild, ElementRef } from '@angular/core';
+import { CdkDragEnd } from '@angular/cdk/drag-drop';
+import { MatIconModule } from '@angular/material/icon';
 
-import { LegendCardComponent } from './legend-card.component';
+@Component({
+  selector: 'app-legend-card',
+  templateUrl: './legend-card.component.html',
+  styleUrls: ['./legend-card.component.css']
+})
+export class LegendCardComponent {
+  isCollapsed = false;
 
-describe('LegendCardComponent', () => {
-  let component: LegendCardComponent;
-  let fixture: ComponentFixture<LegendCardComponent>;
+  @ViewChild('card', { static: false }) card!: ElementRef;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [LegendCardComponent]
-    })
-    .compileComponents();
+  toggleCard(): void {
+    this.isCollapsed = !this.isCollapsed;
+  }
 
-    fixture = TestBed.createComponent(LegendCardComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+  @HostListener('cdkDragEnded', ['$event'])
+  onDragEnded(event: CdkDragEnd): void {
+    const cardElement = this.card.nativeElement;
+    const navbarHeight = 80; // Height of your navbar
+    const viewportHeight = window.innerHeight;
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
+    // Get the card's bounding rectangle
+    const cardRect = cardElement.getBoundingClientRect();
+    const navbarRect = document.querySelector('.navbar')?.getBoundingClientRect();
+
+    // Ensure the card stays within the visible viewport
+    if (cardRect.top < navbarHeight) {
+      cardElement.style.top = `${navbarHeight}px`;
+    }
+    if (cardRect.bottom > viewportHeight) {
+      cardElement.style.top = `${viewportHeight - cardRect.height}px`;
+    }
+  }
+}

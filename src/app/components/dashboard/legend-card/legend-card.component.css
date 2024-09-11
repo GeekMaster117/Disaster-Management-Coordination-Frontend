@@ -8,8 +8,9 @@
     max-width: 600px; /* Max width for larger screens */
     backdrop-filter: blur(16px) saturate(180%);
     -webkit-backdrop-filter: blur(16px) saturate(180%);
-    background-color: rgba(255, 255, 255, 0.75);
+    background-color: rgba(17, 25, 40, 0.75);
     border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.125);
     cursor: default; /* Use default pointer */
     display: flex;
     flex-direction: column;
@@ -19,98 +20,111 @@
     z-index: 1070; /* Ensure the card is above the navbar but below the side menu */
     transition: height 0.3s ease;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add shadow for better visibility */
+    max-height: calc(100vh - 80px); /* Ensure it doesn't go below the navbar */
 }
 
-/* Card constraints */
-.card {
-    /* Ensure it doesn't go below the navbar */
-    max-height: calc(100vh - 80px); /* Adjust according to the height of your navbar */
-}
-
+/* Card Collapse */
 .card.collapsed {
-    height: 60px;
+    height: 42px;
+    width: 140px;
+    
 }
 
 .card-body {
     padding: 10px;
     display: flex;
-    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+    flex-direction: column;
     transition: opacity 0.3s ease, max-height 0.3s ease;
     opacity: 1;
-    max-height: 120px;
+    max-height: 300px; /* Adjust based on content */
+    overflow-y: auto;
 }
 
-.card-body img {
-    width: 100%;
-    height: auto;
-}
-
+/* Card Collapse */
 .card.collapsed .card-body {
     max-height: 0;
     opacity: 0;
+    padding: 0px;
+
+    
 }
 
+.card.collapsed .card-header{
+    border: none;
+}
+/* Header Styles */
 .card-header {
-    background: #007bff;
+    border: 1px solid rgba(255, 255, 255, 0.125);
     color: white;
-    padding: 10px;
+    padding: 5px;
     border-radius: 8px 8px 0 0;
     font-weight: bold;
-    text-align: center;
     position: relative;
     display: flex;
-    justify-content: space-between;
+    justify-content: left; /* Center the text */
+    padding-left: 24px;
     align-items: center;
+}
+
+.header-text {
+    margin: 0;
+    position: absolute;
+    left: 0;
+    right: 0;
+    text-align: center; /* Center text */
 }
 
 .toggle-btn {
     background: transparent;
     border: none;
     cursor: pointer;
-    font-size: 20px;
-    color: white;
+    position: absolute;
+    right: 10px; /* Adjust as needed */
 }
 
-.icon-chevron-down::before {
-    content: '▼';
+.eye-icon {
+    color: rgb(49, 186, 255); /* Make the eye icon visible */
 }
 
-.icon-chevron-up::before {
-    content: '▲';
-}
-
-.grid-container {
+/* Legend Grid */
+.legend-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 10px;
+    gap: 15px;
 }
 
-.grid-item {
-    display: flex;
-    flex-direction: column;
-}
-
-.severity {
+/* Legend Items */
+.legend-item {
     display: flex;
     align-items: center;
     margin-bottom: 10px;
+    padding: 5px;
+    border-radius: 8px;
+    background: rgba(111, 111, 111, 0.2);
 }
 
-.severity i {
-    font-size: 20px;
+.legend-icon {
+    font-size: 24px;
     margin-right: 10px;
+    color: #007bff; /* Customize color */
 }
 
-.high-severity {
-    color: #d9534f;
+.legend-item span {
+    color: #fff;
 }
 
-.moderate-severity {
-    color: #f0ad4e;
+/* Scrollbar Styles */
+.card-body::-webkit-scrollbar {
+    width: 8px;
 }
 
-.low-severity {
-    color: #5bc0de;
+.card-body::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 4px;
+}
+
+.card-body::-webkit-scrollbar-track {
+    background: transparent;
 }
 
 @media (max-width: 768px) {

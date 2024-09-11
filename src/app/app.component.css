@@ -2,8 +2,10 @@
     display: block;
     position: relative;
     z-index: 1000; /* Should not conflict with navbar or side menu */
+
   }
   
+
   .app-container {
     display: flex;
     flex-direction: column;
@@ -11,7 +13,7 @@
   }
   
   .content {
-    flex: 1; 
+    flex: 1;     
   }
   
 

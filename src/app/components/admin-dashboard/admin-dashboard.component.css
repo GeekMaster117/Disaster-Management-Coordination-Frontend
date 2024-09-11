@@ -1,111 +1,204 @@
-/* General Styles */
-body {
-    font-family: 'Montserrat', sans-serif;
-    background: #f6f5f7;
-    margin: 0;
+html {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.dashboard-container {
+  min-height: 100vh;
+  background-color: #111927;
+  background-image: 
+      radial-gradient(at 47% 33%, hsl(266.91, 100%, 26%) 0, transparent 59%), 
+      radial-gradient(at 82% 65%, hsl(217.96, 100%, 20%) 0, transparent 55%);
+  background-size: cover;
+  background-attachment: fixed;
+  background-position: center;
+}
+
+.container-fluid {
+  padding: 20px;
+  min-height: 100%;
+}
+
+.row {
+  display: flex;
+  margin-top: 10vh;
+}
+
+/* Column Styles */
+.col-md-4 {
+  width: 30%;
+  padding-right: 15px;
+}
+
+.col-md-8 {
+  width: 70%;
+  padding-left: 15px;
+}
+
+/* Card Styles */
+.card {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  margin-bottom: 20px;
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  background-color: rgba(17, 25, 40, 0.75);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  transition: transform 0.3s ease-in-out;
+}
+
+.card-title {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #fff;
+}
+
+.card-body {
+  padding: 20px;
+}
+
+/* Form Styles */
+.form-group {
+  margin-bottom: 15px;
+  color: rgb(184, 184, 184);
+}
+
+::placeholder, select, option {
+  color: rgb(211, 211, 211);
+  opacity: 1;
+}
+
+.form-control {
+  color: white;
+  border-radius: 5px;
+  padding: 10px;
+  background-color: #1f2a37;
+  border: 1px solid #4b5663;
+}
+
+.form-control:focus {
+  border-color: #007bff;
+  box-shadow: none;
+}
+
+select.form-control option:disabled {
+  color: lightgray;
+}
+
+p{
+  color: white;
+}
+
+/* Button Styles */
+.btn {
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  font-weight: bold;
+  height: 35px;
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  align-items: center;     /* Center vertically */
+  text-align: center;
+}
+
+.btn-primary {
+  background-color: #2ea44f;
+  border-color: #2ea44f;
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background-color: #1e7b39;
+}
+
+.btn-danger {
+  background-color: #dc3545;
+  color: #fff;
+}
+
+.btn-danger:hover {
+  background-color: #c82333;
+}
+
+/* Map Styles */
+#map {
+  height: 500px;
+  width: 100%;
+  border-radius: 10px;
+}
+
+/* Scrollable List Styles */
+/* Scrollable List Styles */
+.scrollable-list {
+  max-height: 300px;
+  overflow-y: auto;
+  padding-right: 10px; /* Ensure content isn't hidden behind the scrollbar */
+}
+
+/* Webkit Browsers (Chrome, Safari) */
+.scrollable-list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.scrollable-list::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1); /* Light grey track */
+}
+
+.scrollable-list::-webkit-scrollbar-thumb {
+  background: #767676; /* Blue thumb */
+  border-radius: 10px;
+}
+
+.scrollable-list::-webkit-scrollbar-thumb:hover {
+  background: rgb(86, 86, 86); /* Darker blue when hovered */
+}
+
+/* Firefox */
+.scrollable-list {
+  scrollbar-width: thin; /* Makes the scrollbar thin */
+  scrollbar-color: #ffffff rgba(0, 0, 0, 0.1); /* Blue thumb, light grey track */
+}
+
+/* Edge */
+.scrollable-list {
+  -ms-overflow-style: scrollbar; /* Ensures scrollbar appears in Edge */
+}
+
+
+.list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-bottom: 1px solid #4b5663;
+}
+
+.item-content {
+  flex: 1;
+}
+
+.item-actions {
+  display: flex;
+  gap: 5px;
+}
+
+.item-actions .btn {
+  padding: 5px;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .col-md-4,
+  .col-md-8 {
+    width: 100%;
     padding: 0;
   }
-  
-  .container-fluid {
-    margin-top: 10vh;
-    padding: 20px;
-  }
-  
-  .row {
-    display: flex;
-  }
-  
-  /* Column Styles */
-  .col-md-4 {
-    width: 30%;
-    padding-right: 15px;
-  }
-  
-  .col-md-8 {
-    width: 70%;
-    padding-left: 15px;
-  }
-  
-  /* Card Styles */
-  .card {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    border: none;
-    border-radius: 10px;
-    margin-bottom: 20px;
-    background-color: #ffffff;
-    transition: transform 0.3s ease-in-out;
-  }
 
-  
-  .card-title {
-    font-size: 1.25rem;
-    font-weight: bold;
-    color: #333;
-  }
-  
-  .card-body {
-    padding: 20px;
-  }
-  
-  /* Form Styles */
-  .form-group {
-    margin-bottom: 15px;
-  }
-  
-  .form-control {
-    border-radius: 5px;
+  .container-fluid {
     padding: 10px;
-    border: 1px solid #ddd;
   }
-  
-  .form-control:focus {
-    border-color: #007bff;
-    box-shadow: none;
-  }
-  
-  .btn {
-    width: 100%;
-    padding: 10px;
-    border-radius: 5px;
-    font-weight: bold;
-  }
-  
-  .btn-primary {
-    background-color: #007bff;
-    border: none;
-  }
-  
-  .btn-primary:hover {
-    background-color: #0056b3;
-  }
-  
-  .btn-danger {
-    background-color: #dc3545;
-    border: none;
-  }
-  
-  .btn-danger:hover {
-    background-color: #c82333;
-  }
-  
-  /* Map Styles */
-  .map-container {
-    height: 500px;
-    width: 100%;
-    border-radius: 10px;
-    overflow: hidden;
-  }
-  
-  /* Responsive Styles */
-  @media (max-width: 768px) {
-    .col-md-4,
-    .col-md-8 {
-      width: 100%;
-      padding: 0;
-    }
-  
-    .container-fluid {
-      padding: 10px;
-    }
-  }
-  
+}
