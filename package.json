@@ -21,6 +21,7 @@
     "@angular/platform-browser-dynamic": "^18.2.0",
     "@angular/router": "^18.2.0",
     "@microsoft/signalr": "^8.0.7",
+    "@nguniversal/express-engine": "^7.0.1",
     "@types/leaflet-routing-machine": "^3.2.8",
     "bootstrap": "^5.3.3",
     "leaflet": "^1.9.4",
