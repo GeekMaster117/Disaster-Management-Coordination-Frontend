@@ -4,8 +4,8 @@ import 'leaflet-routing-machine'
 import * as SignalR from '@microsoft/signalr'
 import { APIResponse } from "../../../../response/api.response";
 import { baseString } from "../../../../urls/basestring.url";
-import { AffectedAreaService } from "../../dashboard/map/affected-area.service";
-import { RefugeeCampService } from "../../dashboard/map/refugee-camp.service";
+import { AffectedAreaService } from "./affected-area.service";
+import { RefugeeCampService } from "./refugee-camp.service";
 import { MapDataService } from "../map-data.service";
 import { Subscription } from 'rxjs';
 

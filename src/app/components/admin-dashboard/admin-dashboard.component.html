@@ -134,13 +134,13 @@
             <div class="scrollable-list">
               <div class="list-item" *ngFor="let camp of refugeeCamps">
                 <div class="item-content">
-                  <p>Latitude: {{camp.latitude}} | Longitude: {{camp.longitude}}</p>
+                  <p>CampId: {{camp.campId}} | Latitude: {{camp.latitude}} | Longitude: {{camp.longitude}}</p>
                 </div>
                 <div class="item-actions">
-                  <button class="btn btn-primary btn-sm" (click)="updateCamp(camp.id)">
+                  <button class="btn btn-primary btn-sm" (click)="updateCamp(camp.campId)">
                     <span class="material-symbols-outlined">edit</span>
                   </button>
-                  <button class="btn btn-danger btn-sm" (click)="deleteCamp(camp.id)">
+                  <button class="btn btn-danger btn-sm" (click)="deleteCamp(camp.campId)">
                     <span class="material-symbols-outlined">delete</span>
                   </button>
                 </div>
