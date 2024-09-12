@@ -70,6 +70,8 @@ html {
   color: rgb(184, 184, 184);
 }
 
+
+
 ::placeholder, select, option {
   color: rgb(211, 211, 211);
   opacity: 1;
