@@ -4,7 +4,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { AdminLoginComponent } from './components/admin-login/admin-login.component';
 import { AdminRegisterComponent } from './components/admin-register/admin-register.component';
 import { AuthGuard } from '../guard/auth.guard';
-import { AdminHomeComponent } from './components/admin-home/admin-home.component';
 import { AboutComponent } from './components/about/about.component';
 import { PrecautionsComponent } from './components/precautions/precautions.component';
 import { DashboardComponent } from './components/dashboard/dashboard/dashboard.component';
@@ -17,7 +16,6 @@ const routes: Routes = [
     redirectTo: 'admin/login',
     pathMatch: 'full'
   },
-
   {
     path: 'admin/login',
     component: AdminLoginComponent
@@ -28,8 +26,8 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
-    path: 'admin/home',
-    component: AdminHomeComponent,
+    path: 'admin/dashboard',
+    component: AdminDashboardComponent,
     canActivate: [AuthGuard]
   },
   {
@@ -50,11 +48,13 @@ const routes: Routes = [
     pathMatch: 'full' 
   },
   {
-    path: 'admin/dashboard',
-    component: AdminDashboardComponent
+    path: 'not-found',
+    component: NotFoundComponent
   },
-  { path: 'not-found', component: NotFoundComponent },
-  { path: '**', redirectTo: '/not-found' } 
+  {
+    path: '**',
+    redirectTo: '/not-found'
+  } 
 ];
 
 @NgModule({

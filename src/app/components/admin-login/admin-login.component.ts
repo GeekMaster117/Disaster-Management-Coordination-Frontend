@@ -25,7 +25,7 @@ export class AdminLoginComponent implements OnInit {
             ]]
         })
         if (await this.guard.canActivate())
-            this.router.navigate(['admin/home'])
+            this.router.navigate(['admin/dashboard'])
     }
 
     public isInvalid(input: string) {
@@ -54,7 +54,7 @@ export class AdminLoginComponent implements OnInit {
                 console.log(data)
                 localStorage.setItem('token', data.message.token)
                 localStorage.setItem('tokenExpiry', data.message.expiry)
-                this.router.navigate(['admin/home'])
+                this.router.navigate(['admin/dashboard'])
             },
             error: (errorData: any) =>  console.log(errorData.error.message),
             complete: () => {

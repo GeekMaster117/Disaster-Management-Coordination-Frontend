@@ -5,13 +5,11 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { MatIconModule } from '@angular/material/icon';
 import { AdminInterceptor } from '../interceptor/admin.interceptor';
 
 import { AdminLoginComponent } from './components/admin-login/admin-login.component';
 import { AdminRegisterComponent } from './components/admin-register/admin-register.component';
-import { AdminHomeComponent } from './components/admin-home/admin-home.component';
-
-import { MatIconModule } from '@angular/material/icon';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { AboutComponent } from './components/about/about.component';
 import { PrecautionsComponent } from './components/precautions/precautions.component';
@@ -30,7 +28,6 @@ import { MapDataService } from './components/admin-dashboard/map-data.service';
     AppComponent,
     AdminLoginComponent,
     AdminRegisterComponent,
-    AdminHomeComponent,
     NavbarComponent,
     AboutComponent,
     PrecautionsComponent,
