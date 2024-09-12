@@ -110,7 +110,7 @@ export class MapComponent implements OnInit {
   private deleteLine(): void {
     if (this.routeLayer)
     {
-      console.log('Removing route layer');
+      this.map.removeLayer(this.routeLayer)
       this.routeLayer = null
     }
   }
