@@ -1,7 +1,6 @@
 import { Injectable } from "@angular/core";
 import { CanActivate, Router} from "@angular/router";
 import { AuthService } from "./auth.service";
-import { APIResponse } from "../response/api.response";
 
 @Injectable({
     providedIn: 'root'
@@ -13,12 +12,17 @@ export class AuthGuard implements CanActivate {
     public async isLoggedIn(): Promise<string> {
         return new Promise((resolve, reject) => {
             let tokenExists: boolean = localStorage.getItem('token') != null &&
-            localStorage.getItem('tokenExpiry') != null &&
-            new Date(localStorage.getItem('tokenExpiry')!) > new Date()
-
+            localStorage.getItem('tokenExpiry') != null
             if (!tokenExists)
             {
                 reject('token not found')
+                return
+            }
+
+            let expiryValid: boolean = new Date(localStorage.getItem('tokenExpiry')!) > new Date()
+            if (!expiryValid)
+            {
+                reject('token has expired')
                 return
             }
 

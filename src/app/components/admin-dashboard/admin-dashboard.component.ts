@@ -8,6 +8,8 @@ import { baseString } from '../../../urls/basestring.url';
 import { APIResponse } from '../../../response/api.response';
 import { AffectedAreaService } from './admin-map/affected-area.service';
 import { RefugeeCampService } from './admin-map/refugee-camp.service';
+import { AuthGuard } from '../../../guard/auth.guard';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -36,7 +38,7 @@ export class AdminDashboardComponent implements AfterViewInit, OnInit, OnDestroy
   RefugeepickMode: boolean = false;
   private coordinatesSubscription: Subscription | null = null;
 
-  constructor(private fb: FormBuilder, private mapDataService: MapDataService, private areaService: AffectedAreaService, private campService: RefugeeCampService) {}
+  constructor(private fb: FormBuilder, private guard: AuthGuard, private router: Router, private mapDataService: MapDataService, private areaService: AffectedAreaService, private campService: RefugeeCampService) {}
 
   ngOnInit() {
     this.subscribeToCoordinates();
@@ -53,6 +55,16 @@ export class AdminDashboardComponent implements AfterViewInit, OnInit, OnDestroy
       this.coordinatesSubscription.unsubscribe();
     }
   }
+
+  private async checkValidation(): Promise<void> {
+    while(true) {
+        if (!await this.guard.canActivate())
+            break
+        await new Promise((resolve) => setTimeout(resolve, 1000))
+    }
+    alert('Your Login has expired')
+    this.router.navigate(['admin/login'])
+}
 
   private subscribeToCoordinates() {
     this.coordinatesSubscription = this.mapDataService.getCoordinates().subscribe(coords => {
