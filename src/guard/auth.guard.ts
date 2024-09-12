@@ -8,7 +8,6 @@ import { APIResponse } from "../response/api.response";
 })
 
 export class AuthGuard implements CanActivate {
-    private loginStatus: boolean = false
     public constructor(private router: Router, private service: AuthService) {}
 
     public async isLoggedIn(): Promise<string> {
@@ -37,19 +36,11 @@ export class AuthGuard implements CanActivate {
         })
     }
 
-    public getLoginStatus(): boolean {
-        return this.loginStatus
-    }
-
     public async canActivate(): Promise<boolean> {
-        try {
-            await this.isLoggedIn()
-            this.loginStatus = true
-            return true
-        }
-        catch {
-            this.loginStatus = false
-            return false
-        }
+        let returnBool: boolean = null!
+        await this.isLoggedIn()
+        .then(() => returnBool = true)
+        .catch(() => returnBool = false)
+        return returnBool
     }
 }

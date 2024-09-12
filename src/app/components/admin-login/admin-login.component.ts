@@ -15,9 +15,7 @@ export class AdminLoginComponent implements OnInit {
     public constructor(private service: LoginService, private router: Router, private fb: FormBuilder, private guard: AuthGuard) { }
     public loginForm: FormGroup = null!
 
-    public ngOnInit(): void {
-        if (this.guard.getLoginStatus())
-            this.router.navigate(['admin/home'])
+    public async ngOnInit(): Promise<void> {
         this.loginForm = this.fb.group({
             username: ['', [
                 Validators.required
@@ -26,6 +24,8 @@ export class AdminLoginComponent implements OnInit {
                 Validators.required
             ]]
         })
+        if (await this.guard.canActivate())
+            this.router.navigate(['admin/dashboard'])
     }
 
     public isInvalid(input: string) {
@@ -54,7 +54,7 @@ export class AdminLoginComponent implements OnInit {
                 console.log(data)
                 localStorage.setItem('token', data.message.token)
                 localStorage.setItem('tokenExpiry', data.message.expiry)
-                this.router.navigate(['admin/home'])
+                this.router.navigate(['admin/dashboard'])
             },
             error: (errorData: any) =>  console.log(errorData.error.message),
             complete: () => {
