@@ -59,6 +59,11 @@ html {
   padding: 20px;
 }
 
+.error-message {
+  color: rgb(255, 29, 29);
+  font-size: 0.875em;
+  margin-top: 0.25em;
+}
 /* Form Styles */
 .form-group {
   margin-bottom: 15px;

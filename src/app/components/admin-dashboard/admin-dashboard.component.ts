@@ -2,6 +2,7 @@ import { AfterViewInit, Component, OnInit, OnDestroy } from '@angular/core';
 import * as L from 'leaflet';
 import { Subscription } from 'rxjs';
 import { MapDataService } from './map-data.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -19,14 +20,11 @@ export class AdminDashboardComponent implements AfterViewInit, OnInit, OnDestroy
   affectedAreaSeverity: string = '';
   disasterType: string = '';
 
-  // Arrays to hold refugee camps and affected areas
   refugeeCamps = [
-    // Example data
     { id: 1, latitude: '12.34', longitude: '56.78' }
   ];
 
   affectedAreas = [
-    // Example data
     { id: 1, latitude: '12.34', longitude: '56.78', radius: '10km', severity: 'High', disasterType: 'Flood' }
   ];
 
@@ -35,11 +33,25 @@ export class AdminDashboardComponent implements AfterViewInit, OnInit, OnDestroy
   AffectedpickMode: boolean = false;
   RefugeepickMode: boolean = false;
   private coordinatesSubscription: Subscription | null = null;
+  refugeeCampForm!: FormGroup;
+  affectedAreaForm!: FormGroup;
 
-  constructor(private mapDataService: MapDataService) {}
+  constructor(private fb: FormBuilder ,private mapDataService: MapDataService) {}
 
   ngOnInit() {
     this.subscribeToCoordinates();
+    this.refugeeCampForm = this.fb.group({
+      refugeeLatitude: ['', Validators.required],
+      refugeeLongitude: ['', Validators.required]
+    });
+
+    this.affectedAreaForm = this.fb.group({
+      affectedLatitude: ['', Validators.required],
+      affectedLongitude: ['', Validators.required],
+      radius: ['', Validators.required],
+      severity: ['', Validators.required],
+      disasterType: ['', Validators.required]
+    });
   }
 
   ngAfterViewInit(): void {
@@ -116,7 +128,7 @@ export class AdminDashboardComponent implements AfterViewInit, OnInit, OnDestroy
   }
 
   addRefugeeCamp() {
-    if (this.refugeeCampLatitude && this.refugeeCampLongitude) {
+    if (this.refugeeCampForm.valid){
       console.log('Refugee Camp Added:', this.refugeeCampLatitude, this.refugeeCampLongitude);
       this.refugeeCamps.push({
         id: Date.now(),
@@ -128,7 +140,7 @@ export class AdminDashboardComponent implements AfterViewInit, OnInit, OnDestroy
   }
 
   addAffectedArea() {
-    if (this.affectedAreaLatitude && this.affectedAreaLongitude && this.affectedAreaRadius && this.affectedAreaSeverity && this.disasterType) {
+    if (this.affectedAreaForm.valid) {
       console.log('Affected Area Added:', this.affectedAreaLatitude, this.affectedAreaLongitude, this.affectedAreaRadius, this.affectedAreaSeverity, this.disasterType);
       this.affectedAreas.push({
         id: Date.now(),
@@ -138,9 +150,10 @@ export class AdminDashboardComponent implements AfterViewInit, OnInit, OnDestroy
         severity: this.affectedAreaSeverity,
         disasterType: this.disasterType
       });
-      this.resetAffectedAreaForm();
+      this.resetAffectedAreaForm(); // Ensure this does not clear data prematurely
     }
   }
+
 
   updateCamp(id: number) {
     console.log('Update Refugee Camp ID:', id);

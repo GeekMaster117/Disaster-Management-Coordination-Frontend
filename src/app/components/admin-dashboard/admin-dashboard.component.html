@@ -7,7 +7,7 @@
         <div class="card">
           <div class="card-body">
             <h5 class="card-title">Add Refugee Camp</h5>
-            <form>
+            <form [formGroup]="refugeeCampForm" (ngSubmit)="addRefugeeCamp()">
               <div class="form-group">
                 <label for="refugeeLatitude">Latitude</label>
                 <input
@@ -15,9 +15,11 @@
                   class="form-control"
                   id="refugeeLatitude"
                   placeholder="Enter latitude"
-                  [(ngModel)]="refugeeCampLatitude"
-                  name="refugeeLatitude"
+                  formControlName="refugeeLatitude"
                 />
+                <div *ngIf="refugeeCampForm.get('refugeeLatitude')?.invalid && (refugeeCampForm.get('refugeeLatitude')?.dirty || refugeeCampForm.get('refugeeLatitude')?.touched)" class="error-message">
+                  <div *ngIf="refugeeCampForm.get('refugeeLatitude')?.errors?.['required']">Latitude is required.</div>
+                </div>
               </div>
               <div class="form-group">
                 <label for="refugeeLongitude">Longitude</label>
@@ -26,15 +28,17 @@
                   class="form-control"
                   id="refugeeLongitude"
                   placeholder="Enter longitude"
-                  [(ngModel)]="refugeeCampLongitude"
-                  name="refugeeLongitude"
+                  formControlName="refugeeLongitude"
                 />
+                <div *ngIf="refugeeCampForm.get('refugeeLongitude')?.invalid && (refugeeCampForm.get('refugeeLongitude')?.dirty || refugeeCampForm.get('refugeeLongitude')?.touched)" class="error-message">
+                  <div *ngIf="refugeeCampForm.get('refugeeLongitude')?.errors?.['required']">Longitude is required.</div>
+                </div>
               </div>
               <div class="button-group">
                 <button type="button" class="btn btn-danger" (click)="toggleRefugeePickMode()">
                   {{ RefugeepickMode ? 'Cancel' : 'Pick' }}
                 </button>
-                <button type="button" class="btn btn-primary" (click)="addRefugeeCamp()">
+                <button type="submit" class="btn btn-primary">
                   Add
                 </button>
               </div>
@@ -46,7 +50,7 @@
         <div class="card">
           <div class="card-body">
             <h5 class="card-title">Add Affected Area</h5>
-            <form>
+            <form [formGroup]="affectedAreaForm" (ngSubmit)="addAffectedArea()">
               <div class="form-group">
                 <label for="affectedLatitude">Latitude</label>
                 <input
@@ -54,9 +58,11 @@
                   class="form-control"
                   id="affectedLatitude"
                   placeholder="Enter latitude"
-                  [(ngModel)]="affectedAreaLatitude"
-                  name="affectedLatitude"
+                  formControlName="affectedLatitude"
                 />
+                <div *ngIf="affectedAreaForm.get('affectedLatitude')?.invalid && (affectedAreaForm.get('affectedLatitude')?.dirty || affectedAreaForm.get('affectedLatitude')?.touched)" class="error-message">
+                  <div *ngIf="affectedAreaForm.get('affectedLatitude')?.errors?.['required']">Latitude is required.</div>
+                </div>
               </div>
               <div class="form-group">
                 <label for="affectedLongitude">Longitude</label>
@@ -65,9 +71,11 @@
                   class="form-control"
                   id="affectedLongitude"
                   placeholder="Enter longitude"
-                  [(ngModel)]="affectedAreaLongitude"
-                  name="affectedLongitude"
+                  formControlName="affectedLongitude"
                 />
+                <div *ngIf="affectedAreaForm.get('affectedLongitude')?.invalid && (affectedAreaForm.get('affectedLongitude')?.dirty || affectedAreaForm.get('affectedLongitude')?.touched)" class="error-message">
+                  <div *ngIf="affectedAreaForm.get('affectedLongitude')?.errors?.['required']">Longitude is required.</div>
+                </div>
               </div>
               <div class="form-group">
                 <label for="radius">Radius</label>
@@ -76,29 +84,46 @@
                   class="form-control"
                   id="radius"
                   placeholder="Enter radius"
-                  [(ngModel)]="affectedAreaRadius"
-                  name="radius"
+                  formControlName="radius"
                 />
+                <div *ngIf="affectedAreaForm.get('radius')?.invalid && (affectedAreaForm.get('radius')?.dirty || affectedAreaForm.get('radius')?.touched)" class="error-message">
+                  <div *ngIf="affectedAreaForm.get('radius')?.errors?.['required']">Radius is required.</div>
+                </div>
               </div>
               <div class="form-group">
                 <label for="severity">Severity</label>
                 <select
                   class="form-control"
                   id="severity"
-                  [(ngModel)]="affectedAreaSeverity"
-                  name="severity"
+                  formControlName="severity"
                 >
-                  <option value="" disabled selected>Select severity</option>
+                  <option value="" disabled>Select severity</option>
                   <option value="low">Moderate</option>
                   <option value="medium">High</option>
                   <option value="high">Severe</option>
                 </select>
+                <div *ngIf="affectedAreaForm.get('severity')?.invalid && (affectedAreaForm.get('severity')?.dirty || affectedAreaForm.get('severity')?.touched)" class="error-message">
+                  <div *ngIf="affectedAreaForm.get('severity')?.errors?.['required']">Severity is required.</div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="disasterType">Disaster Type</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="disasterType"
+                  placeholder="Enter disaster type"
+                  formControlName="disasterType"
+                />
+                <div *ngIf="affectedAreaForm.get('disasterType')?.invalid && (affectedAreaForm.get('disasterType')?.dirty || affectedAreaForm.get('disasterType')?.touched)" class="error-message">
+                  <div *ngIf="affectedAreaForm.get('disasterType')?.errors?.['required']">Disaster Type is required.</div>
+                </div>
               </div>
               <div class="button-group">
                 <button type="button" class="btn btn-danger" (click)="toggleAffectedPickMode()">
                   {{ AffectedpickMode ? 'Cancel' : 'Pick' }}
                 </button>
-                <button type="button" class="btn btn-primary" (click)="addAffectedArea()">
+                <button type="submit" class="btn btn-primary">
                   Add
                 </button>
               </div>
