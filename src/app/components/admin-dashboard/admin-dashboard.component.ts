@@ -2,7 +2,21 @@ import { AfterViewInit, Component, OnInit, OnDestroy } from '@angular/core';
 import * as L from 'leaflet';
 import { Subscription } from 'rxjs';
 import { MapDataService } from './map-data.service';
-import { FormBuilder } from '@angular/forms';
+
+interface RefugeeCamp {
+  id: number;
+  latitude: string;
+  longitude: string;
+}
+
+interface AffectedArea {
+  id: number;
+  latitude: string;
+  longitude: string;
+  radius: string;
+  severity: string;
+  disasterType: string;
+}
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -11,9 +25,11 @@ import { FormBuilder } from '@angular/forms';
 })
 export class AdminDashboardComponent implements AfterViewInit, OnInit, OnDestroy {
 
-  // Model Variables for the form inputs
+  // Refugee Camp form inputs
   refugeeCampLatitude: string = '';
   refugeeCampLongitude: string = '';
+
+  // Affected Area form inputs
   affectedAreaLatitude: string = '';
   affectedAreaLongitude: string = '';
   affectedAreaRadius: string = '';
@@ -21,14 +37,16 @@ export class AdminDashboardComponent implements AfterViewInit, OnInit, OnDestroy
   disasterType: string = '';
 
   // Arrays to hold refugee camps and affected areas
-  refugeeCamps = [
+  refugeeCamps: RefugeeCamp[] = [
     // Example data
     { id: 1, latitude: '12.34', longitude: '56.78' }
   ];
 
-  affectedAreas = [
+  affectedAreas: AffectedArea[] = [
     // Example data
-    { id: 1, latitude: '12.34', longitude: '56.78', radius: '10km', severity: 'High', disasterType: 'Flood' }
+    { id: 1, latitude: '12.34', longitude: '56.78', radius: '10km', severity: 'High', disasterType: 'Flood' },
+    { id: 2, latitude: '23.45', longitude: '67.89', radius: '5km', severity: 'Moderate', disasterType: 'Earthquake' },
+    { id: 3, latitude: '34.56', longitude: '78.90', radius: '15km', severity: 'Severe', disasterType: 'Hurricane' },
   ];
 
   private map: any;
@@ -37,7 +55,11 @@ export class AdminDashboardComponent implements AfterViewInit, OnInit, OnDestroy
   RefugeepickMode: boolean = false;
   private coordinatesSubscription: Subscription | null = null;
 
-  constructor(private fb: FormBuilder ,private mapDataService: MapDataService) {}
+  // New properties for Affected Area form
+  selectedAreaId: string = '';
+  isEditing: boolean = false;
+
+  constructor(private mapDataService: MapDataService) {}
 
   ngOnInit() {
     this.subscribeToCoordinates();
@@ -65,7 +87,6 @@ export class AdminDashboardComponent implements AfterViewInit, OnInit, OnDestroy
   private initMap(): void {
     // Initialize the map here if needed
     // Note: The actual map initialization should be done in the AdminMapComponent
-    // This method might not be necessary in the AdminDashboardComponent
   }
 
   toggleAffectedPickMode() {
@@ -128,21 +149,73 @@ export class AdminDashboardComponent implements AfterViewInit, OnInit, OnDestroy
     }
   }
 
+  onAreaIdChange() {
+    if (this.selectedAreaId) {
+      const selectedArea = this.affectedAreas.find(area => area.id === parseInt(this.selectedAreaId));
+      if (selectedArea) {
+        this.fillFormWithAreaData(selectedArea);
+        this.isEditing = true;
+      }
+    } else {
+      this.resetAffectedAreaForm();
+      this.isEditing = false;
+    }
+  }
+  
+  fillFormWithAreaData(area: AffectedArea) {
+    this.affectedAreaLatitude = area.latitude;
+    this.affectedAreaLongitude = area.longitude;
+    this.affectedAreaRadius = area.radius;
+    this.affectedAreaSeverity = area.severity;
+    this.disasterType = area.disasterType;
+  }
+
+  addOrUpdateAffectedArea() {
+    if (this.isEditing) {
+      this.updateAffectedArea();
+    } else {
+      this.addAffectedArea();
+    }
+  }
+
   addAffectedArea() {
-    if (this.affectedAreaLatitude && this.affectedAreaLongitude && this.affectedAreaRadius && this.affectedAreaSeverity && this.disasterType) {
-      console.log('Affected Area Added:', this.affectedAreaLatitude, this.affectedAreaLongitude, this.affectedAreaRadius, this.affectedAreaSeverity, this.disasterType);
-      this.affectedAreas.push({
+    if (this.validateAffectedAreaForm()) {
+      const newArea: AffectedArea = {
         id: Date.now(),
         latitude: this.affectedAreaLatitude,
         longitude: this.affectedAreaLongitude,
         radius: this.affectedAreaRadius,
         severity: this.affectedAreaSeverity,
         disasterType: this.disasterType
-      });
-      this.resetAffectedAreaForm(); // Ensure this does not clear data prematurely
+      };
+      this.affectedAreas.push(newArea);
+      console.log('Affected Area Added:', newArea);
+      this.resetAffectedAreaForm();
     }
   }
 
+  updateAffectedArea() {
+    if (this.validateAffectedAreaForm()) {
+      const index = this.affectedAreas.findIndex(area => area.id === parseInt(this.selectedAreaId));
+      if (index !== -1) {
+        this.affectedAreas[index] = {
+          ...this.affectedAreas[index],
+          latitude: this.affectedAreaLatitude,
+          longitude: this.affectedAreaLongitude,
+          radius: this.affectedAreaRadius,
+          severity: this.affectedAreaSeverity,
+          disasterType: this.disasterType
+        };
+        console.log('Affected Area Updated:', this.affectedAreas[index]);
+        this.resetAffectedAreaForm();
+      }
+    }
+  }
+
+  validateAffectedAreaForm(): boolean {
+    return !!(this.affectedAreaLatitude && this.affectedAreaLongitude && 
+              this.affectedAreaRadius && this.affectedAreaSeverity && this.disasterType);
+  }
 
   updateCamp(id: number) {
     console.log('Update Refugee Camp ID:', id);
@@ -156,7 +229,12 @@ export class AdminDashboardComponent implements AfterViewInit, OnInit, OnDestroy
 
   updateArea(id: number) {
     console.log('Update Affected Area ID:', id);
-    // Implement update logic here
+    const areaToUpdate = this.affectedAreas.find(area => area.id === id);
+    if (areaToUpdate) {
+      this.selectedAreaId = id.toString();
+      this.fillFormWithAreaData(areaToUpdate);
+      this.isEditing = true;
+    }
   }
 
   deleteArea(id: number) {
@@ -173,12 +251,14 @@ export class AdminDashboardComponent implements AfterViewInit, OnInit, OnDestroy
   }
 
   private resetAffectedAreaForm() {
+    this.selectedAreaId = '';
     this.affectedAreaLatitude = '';
     this.affectedAreaLongitude = '';
     this.affectedAreaRadius = '';
     this.affectedAreaSeverity = '';
     this.disasterType = '';
     this.AffectedpickMode = false;
+    this.isEditing = false;
     this.mapDataService.setPickMode(false, null);
     this.clearMarker();
   }

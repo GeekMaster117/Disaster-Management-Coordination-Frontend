@@ -45,8 +45,23 @@
         <!-- Card: Add Affected Area -->
         <div class="card">
           <div class="card-body">
-            <h5 class="card-title">Add Affected Area</h5>
+            <h5 class="card-title">{{isEditing ? 'Update' : 'Add'}} Affected Area</h5>
             <form>
+              <div class="form-group">
+                <label for="areaId">Area Id</label>
+                <select 
+                  class="form-control"
+                  id="areaId"
+                  name="areaId"
+                  [(ngModel)]="selectedAreaId"
+                  (change)="onAreaIdChange()"
+                >
+                  <option value="" selected>Add</option>
+                  <option *ngFor="let area of affectedAreas" [value]="area.id">
+                    {{area.id}}
+                  </option>
+                </select>
+              </div>
               <div class="form-group">
                 <label for="affectedLatitude">Latitude</label>
                 <input
@@ -83,16 +98,16 @@
               <div class="form-group">
                 <label for="severity">Severity</label>
                 <select
-                  class="form-control"
-                  id="severity"
-                  [(ngModel)]="affectedAreaSeverity"
-                  name="severity"
-                >
-                  <option value="" disabled selected>Select severity</option>
-                  <option value="low">Moderate</option>
-                  <option value="medium">High</option>
-                  <option value="high">Severe</option>
-                </select>
+                class="form-control"
+                id="severity"
+                [(ngModel)]="affectedAreaSeverity"
+                name="severity"
+              >
+                <option value="" disabled>Select severity</option>
+                <option value="Moderate">Moderate</option>
+                <option value="High">High</option>
+                <option value="Severe">Severe</option>
+              </select>
               </div>
               <div class="form-group">
                 <label for="disasterType">Radius</label>
@@ -109,8 +124,8 @@
                 <button type="button" class="btn btn-danger" (click)="toggleAffectedPickMode()">
                   {{ AffectedpickMode ? 'Cancel' : 'Pick' }}
                 </button>
-                <button type="button" class="btn btn-primary" (click)="addAffectedArea()">
-                  Add
+                <button type="button" class="btn btn-primary" (click)="addOrUpdateAffectedArea()">
+                  {{selectedAreaId ? 'Update' : 'Add'}}
                 </button>
               </div>
             </form>
@@ -118,11 +133,9 @@
         </div>
       </div>
 
-      <!-- Column 2 (70%) -->
       <div class="col-md-8">
-        <!-- Map Card -->
-        <div class="card">
-          <div class="card-body">
+        <div class="card card-map">
+          <div class="card-body p-0">
             <div id="map"><app-admin-map></app-admin-map></div>
           </div>
         </div>
@@ -156,7 +169,7 @@
             <div class="scrollable-list">
               <div class="list-item" *ngFor="let area of affectedAreas">
                 <div class="item-content">
-                  <p>Latitude: {{area.latitude}} | Longitude: {{area.longitude}} | Radius: {{area.radius}} | Severity: {{area.severity}} | Disaster Type: {{area.disasterType}}</p>
+                  <p>{{area.id}}  ---> Latitude: {{area.latitude}} | Longitude: {{area.longitude}} | Radius: {{area.radius}} | Severity: {{area.severity}} | Disaster Type: {{area.disasterType}}</p>
                 </div>
                 <div class="item-actions">
                   <button class="btn btn-primary btn-sm" (click)="updateArea(area.id)">
