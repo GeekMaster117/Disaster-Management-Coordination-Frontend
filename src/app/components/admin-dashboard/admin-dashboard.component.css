@@ -135,9 +135,12 @@ p{
 
 /* Map Styles */
 #map {
-  height: 500px;
+  height: 498px;
   width: 100%;
   border-radius: 10px;
+  margin: 0; /* No margin */
+  padding: 0; /* No padding */
+  border-radius: 0;
 }
 
 /* Scrollable List Styles */
