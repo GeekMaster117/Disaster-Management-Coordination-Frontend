@@ -1,9 +1,4 @@
-html {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  font-family: 'Montserrat', sans-serif;
-}
+
 
 .dashboard-container {
   min-height: 100vh;
@@ -14,6 +9,8 @@ html {
   background-size: cover;
   background-attachment: fixed;
   background-position: center;
+  padding: 2rem;
+  padding-top: 0rem;
 }
 
 .container-fluid {
