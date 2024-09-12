@@ -92,8 +92,13 @@ p{
 }
 
 /* Button Styles */
-.btn {
-  width: 100%;
+.button-group {
+  display: flex;
+  gap: 10px; /* Space between buttons */
+}
+
+.button-group .btn {
+  flex: 1;
   padding: 10px;
   border-radius: 5px;
   font-weight: bold;
@@ -104,24 +109,25 @@ p{
   text-align: center;
 }
 
-.btn-primary {
+.button-group .btn-primary {
   background-color: #2ea44f;
   border-color: #2ea44f;
   color: #fff;
 }
 
-.btn-primary:hover {
+.button-group .btn-primary:hover {
   background-color: #1e7b39;
 }
 
-.btn-danger {
+.button-group .btn-danger {
   background-color: #dc3545;
   color: #fff;
 }
 
-.btn-danger:hover {
+.button-group .btn-danger:hover {
   background-color: #c82333;
 }
+
 
 /* Map Styles */
 #map {

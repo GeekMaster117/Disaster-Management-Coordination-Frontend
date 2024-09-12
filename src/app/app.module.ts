@@ -22,6 +22,8 @@ import { MapComponent } from './components/dashboard/map/map.component';
 import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { FooterComponent } from './components/footer/footer.component';
+import { AdminMapComponent } from './components/admin-dashboard/admin-map/admin-map.component';
+import { MapDataService } from './components/admin-dashboard/map-data.service';
 
 @NgModule({
   declarations: [
@@ -38,7 +40,8 @@ import { FooterComponent } from './components/footer/footer.component';
     MapComponent,
     AdminDashboardComponent,
     NotFoundComponent,
-    FooterComponent 
+    FooterComponent,
+    AdminMapComponent
   ],
   imports: [
     BrowserModule,
@@ -49,7 +52,8 @@ import { FooterComponent } from './components/footer/footer.component';
     DragDropModule
   ],
   providers: [
-    provideHttpClient(withInterceptors([AdminInterceptor]))
+    provideHttpClient(withInterceptors([AdminInterceptor])),
+    MapDataService
   ],
   bootstrap: [AppComponent]
 })

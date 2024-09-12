@@ -30,9 +30,14 @@
                   name="refugeeLongitude"
                 />
               </div>
-              <button type="button" class="btn btn-primary" (click)="addRefugeeCamp()">
-                Add
-              </button>
+              <div class="button-group">
+                <button type="button" class="btn btn-danger" (click)="toggleRefugeePickMode()">
+                  {{ RefugeepickMode ? 'Cancel' : 'Pick' }}
+                </button>
+                <button type="button" class="btn btn-primary" (click)="addRefugeeCamp()">
+                  Add
+                </button>
+              </div>
             </form>
           </div>
         </div>
@@ -89,9 +94,14 @@
                   <option value="high">Severe</option>
                 </select>
               </div>
-              <button type="button" class="btn btn-danger" (click)="addAffectedArea()">
-                Add
-              </button>
+              <div class="button-group">
+                <button type="button" class="btn btn-danger" (click)="toggleAffectedPickMode()">
+                  {{ AffectedpickMode ? 'Cancel' : 'Pick' }}
+                </button>
+                <button type="button" class="btn btn-primary" (click)="addAffectedArea()">
+                  Add
+                </button>
+              </div>
             </form>
           </div>
         </div>
@@ -102,7 +112,7 @@
         <!-- Map Card -->
         <div class="card">
           <div class="card-body">
-            <div id="map"><app-map></app-map></div>
+            <div id="map"><app-admin-map></app-admin-map></div>
           </div>
         </div>
         
@@ -116,12 +126,12 @@
                   <p>Latitude: {{camp.latitude}} | Longitude: {{camp.longitude}}</p>
                 </div>
                 <div class="item-actions">
-                  <button class="btn btn-primary btn-sm" (click)="updateCamp(camp.id)"><span class="material-symbols-outlined">
-                    edit
-                    </span></button>
-                  <button class="btn btn-danger btn-sm" (click)="deleteCamp(camp.id)"><span class="material-symbols-outlined">
-                    delete
-                    </span></button>
+                  <button class="btn btn-primary btn-sm" (click)="updateCamp(camp.id)">
+                    <span class="material-symbols-outlined">edit</span>
+                  </button>
+                  <button class="btn btn-danger btn-sm" (click)="deleteCamp(camp.id)">
+                    <span class="material-symbols-outlined">delete</span>
+                  </button>
                 </div>
               </div>
             </div>
@@ -138,12 +148,12 @@
                   <p>Latitude: {{area.latitude}} | Longitude: {{area.longitude}} | Radius: {{area.radius}} | Severity: {{area.severity}} | Disaster Type: {{area.disasterType}}</p>
                 </div>
                 <div class="item-actions">
-                  <button class="btn btn-primary btn-sm" (click)="updateArea(area.id)"><span class="material-symbols-outlined">
-                    edit
-                    </span></button>
-                  <button class="btn btn-danger btn-sm" (click)="deleteArea(area.id)"><span class="material-symbols-outlined">
-                    delete
-                    </span></button>
+                  <button class="btn btn-primary btn-sm" (click)="updateArea(area.id)">
+                    <span class="material-symbols-outlined">edit</span>
+                  </button>
+                  <button class="btn btn-danger btn-sm" (click)="deleteArea(area.id)">
+                    <span class="material-symbols-outlined">delete</span>
+                  </button>
                 </div>
               </div>
             </div>

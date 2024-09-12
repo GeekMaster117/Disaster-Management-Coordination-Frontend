@@ -1,12 +1,14 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, OnDestroy } from '@angular/core';
 import * as L from 'leaflet';
+import { Subscription } from 'rxjs';
+import { MapDataService } from './map-data.service';
 
 @Component({
   selector: 'app-admin-dashboard',
   templateUrl: './admin-dashboard.component.html',
   styleUrls: ['./admin-dashboard.component.css']
 })
-export class AdminDashboardComponent implements AfterViewInit {
+export class AdminDashboardComponent implements AfterViewInit, OnInit, OnDestroy {
 
   // Model Variables for the form inputs
   refugeeCampLatitude: string = '';
@@ -29,53 +31,153 @@ export class AdminDashboardComponent implements AfterViewInit {
   ];
 
   private map: any;
+  private marker: L.Marker | null = null;
+  AffectedpickMode: boolean = false;
+  RefugeepickMode: boolean = false;
+  private coordinatesSubscription: Subscription | null = null;
+
+  constructor(private mapDataService: MapDataService) {}
+
+  ngOnInit() {
+    this.subscribeToCoordinates();
+  }
 
   ngAfterViewInit(): void {
     this.initMap();
   }
 
-  private initMap(): void {
-    this.map = L.map('map').setView([51.505, -0.09], 13);
+  ngOnDestroy() {
+    if (this.coordinatesSubscription) {
+      this.coordinatesSubscription.unsubscribe();
+    }
+  }
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 19,
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(this.map);
+  private subscribeToCoordinates() {
+    this.coordinatesSubscription = this.mapDataService.getCoordinates().subscribe(coords => {
+      if (coords) {
+        this.updateLatLngInputs(coords.lat, coords.lng);
+        this.addMarker(coords.lat, coords.lng);
+      }
+    });
+  }
+
+  private initMap(): void {
+    // Initialize the map here if needed
+    // Note: The actual map initialization should be done in the AdminMapComponent
+    // This method might not be necessary in the AdminDashboardComponent
+  }
+
+  toggleAffectedPickMode() {
+    this.AffectedpickMode = !this.AffectedpickMode;
+    this.RefugeepickMode = false; // Ensure only one pick mode is active at a time
+    this.mapDataService.setPickMode(this.AffectedpickMode, 'affected');
+    if (this.AffectedpickMode) {
+      console.log('Affected Area Pick Mode activated');
+    } else {
+      console.log('Affected Area Pick Mode deactivated');
+      this.clearMarker();
+    }
+  }
+
+  toggleRefugeePickMode() {
+    this.RefugeepickMode = !this.RefugeepickMode;
+    this.AffectedpickMode = false; // Ensure only one pick mode is active at a time
+    this.mapDataService.setPickMode(this.RefugeepickMode, 'refugee');
+    if (this.RefugeepickMode) {
+      console.log('Refugee Camp Pick Mode activated');
+    } else {
+      console.log('Refugee Camp Pick Mode deactivated');
+      this.clearMarker();
+    }
+  }
+
+  addMarker(lat: number, lng: number) {
+    // This method might not be necessary in the AdminDashboardComponent
+    // The marker addition should be handled in the AdminMapComponent
+    console.log('Marker added at:', lat, lng);
+  }
+
+  clearMarker() {
+    // This method might not be necessary in the AdminDashboardComponent
+    // The marker clearing should be handled in the AdminMapComponent
+    console.log('Marker cleared');
+    this.mapDataService.setPickMode(false, null);
+  }
+
+  updateLatLngInputs(lat: number, lng: number) {
+    if (this.AffectedpickMode) {
+      this.affectedAreaLatitude = lat.toString();
+      this.affectedAreaLongitude = lng.toString();
+    }
+    if (this.RefugeepickMode) {
+      this.refugeeCampLatitude = lat.toString();
+      this.refugeeCampLongitude = lng.toString();
+    }
   }
 
   addRefugeeCamp() {
-    // Handle adding refugee camp functionality here
-    console.log('Refugee Camp Added:', this.refugeeCampLatitude, this.refugeeCampLongitude);
-    // Example: Add to the list
-    this.refugeeCamps.push({ id: Date.now(), latitude: this.refugeeCampLatitude, longitude: this.refugeeCampLongitude });
+    if (this.refugeeCampLatitude && this.refugeeCampLongitude) {
+      console.log('Refugee Camp Added:', this.refugeeCampLatitude, this.refugeeCampLongitude);
+      this.refugeeCamps.push({
+        id: Date.now(),
+        latitude: this.refugeeCampLatitude,
+        longitude: this.refugeeCampLongitude
+      });
+      this.resetRefugeeCampForm();
+    }
   }
 
   addAffectedArea() {
-    // Handle adding affected area functionality here
-    console.log('Affected Area Added:', this.affectedAreaLatitude, this.affectedAreaLongitude, this.affectedAreaRadius, this.affectedAreaSeverity, this.disasterType);
-    // Example: Add to the list
-    this.affectedAreas.push({ id: Date.now(), latitude: this.affectedAreaLatitude, longitude: this.affectedAreaLongitude, radius: this.affectedAreaRadius, severity: this.affectedAreaSeverity, disasterType: this.disasterType });
+    if (this.affectedAreaLatitude && this.affectedAreaLongitude && this.affectedAreaRadius && this.affectedAreaSeverity && this.disasterType) {
+      console.log('Affected Area Added:', this.affectedAreaLatitude, this.affectedAreaLongitude, this.affectedAreaRadius, this.affectedAreaSeverity, this.disasterType);
+      this.affectedAreas.push({
+        id: Date.now(),
+        latitude: this.affectedAreaLatitude,
+        longitude: this.affectedAreaLongitude,
+        radius: this.affectedAreaRadius,
+        severity: this.affectedAreaSeverity,
+        disasterType: this.disasterType
+      });
+      this.resetAffectedAreaForm();
+    }
   }
 
   updateCamp(id: number) {
-    // Handle update functionality
     console.log('Update Refugee Camp ID:', id);
+    // Implement update logic here
   }
 
   deleteCamp(id: number) {
-    // Handle delete functionality
     this.refugeeCamps = this.refugeeCamps.filter(camp => camp.id !== id);
     console.log('Deleted Refugee Camp ID:', id);
   }
 
   updateArea(id: number) {
-    // Handle update functionality
     console.log('Update Affected Area ID:', id);
+    // Implement update logic here
   }
 
   deleteArea(id: number) {
-    // Handle delete functionality
     this.affectedAreas = this.affectedAreas.filter(area => area.id !== id);
     console.log('Deleted Affected Area ID:', id);
+  }
+
+  private resetRefugeeCampForm() {
+    this.refugeeCampLatitude = '';
+    this.refugeeCampLongitude = '';
+    this.RefugeepickMode = false;
+    this.mapDataService.setPickMode(false, null);
+    this.clearMarker();
+  }
+
+  private resetAffectedAreaForm() {
+    this.affectedAreaLatitude = '';
+    this.affectedAreaLongitude = '';
+    this.affectedAreaRadius = '';
+    this.affectedAreaSeverity = '';
+    this.disasterType = '';
+    this.AffectedpickMode = false;
+    this.mapDataService.setPickMode(false, null);
+    this.clearMarker();
   }
 }
