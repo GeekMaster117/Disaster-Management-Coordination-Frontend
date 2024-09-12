@@ -1,22 +1,12 @@
 import { AfterViewInit, Component, OnInit, OnDestroy } from '@angular/core';
-import * as L from 'leaflet';
 import { Subscription } from 'rxjs';
 import { MapDataService } from './map-data.service';
-
-interface RefugeeCamp {
-  id: number;
-  latitude: string;
-  longitude: string;
-}
-
-interface AffectedArea {
-  id: number;
-  latitude: string;
-  longitude: string;
-  radius: string;
-  severity: string;
-  disasterType: string;
-}
+import { FormBuilder } from '@angular/forms';
+import * as SignalR from '@microsoft/signalr';
+import { baseString } from '../../../urls/basestring.url';
+import { APIResponse } from '../../../response/api.response';
+import { AffectedAreaService } from './admin-map/affected-area.service';
+import { RefugeeCampService } from './admin-map/refugee-camp.service';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -37,20 +27,12 @@ export class AdminDashboardComponent implements AfterViewInit, OnInit, OnDestroy
   disasterType: string = '';
 
   // Arrays to hold refugee camps and affected areas
-  refugeeCamps: RefugeeCamp[] = [
-    // Example data
-    { id: 1, latitude: '12.34', longitude: '56.78' }
-  ];
+  refugeeCamps: any[] = [];
 
-  affectedAreas: AffectedArea[] = [
-    // Example data
-    { id: 1, latitude: '12.34', longitude: '56.78', radius: '10km', severity: 'High', disasterType: 'Flood' },
-    { id: 2, latitude: '23.45', longitude: '67.89', radius: '5km', severity: 'Moderate', disasterType: 'Earthquake' },
-    { id: 3, latitude: '34.56', longitude: '78.90', radius: '15km', severity: 'Severe', disasterType: 'Hurricane' },
-  ];
+  affectedAreas: any[] = [];
 
-  private map: any;
-  private marker: L.Marker | null = null;
+  connection: SignalR.HubConnection = null!
+
   AffectedpickMode: boolean = false;
   RefugeepickMode: boolean = false;
   private coordinatesSubscription: Subscription | null = null;
@@ -59,10 +41,12 @@ export class AdminDashboardComponent implements AfterViewInit, OnInit, OnDestroy
   selectedAreaId: string = '';
   isEditing: boolean = false;
 
-  constructor(private mapDataService: MapDataService) {}
+  constructor(private fb: FormBuilder, private mapDataService: MapDataService, private areaService: AffectedAreaService, private campService: RefugeeCampService) {}
 
   ngOnInit() {
     this.subscribeToCoordinates();
+    this.startSignalRConnection();
+    this.updateMapOnNotification();
   }
 
   ngAfterViewInit(): void {
@@ -82,6 +66,58 @@ export class AdminDashboardComponent implements AfterViewInit, OnInit, OnDestroy
         this.addMarker(coords.lat, coords.lng);
       }
     });
+  }
+
+  private startSignalRConnection(): void {
+    this.connection = new SignalR.HubConnectionBuilder()
+    .withUrl(`${baseString}/notificationhub`)
+    .build();
+    this.connection
+    .start()
+    .catch(err => console.error('Error while starting SignalR connection: ' + err));
+  }
+
+  private updateMapOnNotification(): void {
+    this.showAllAffectedAreas();
+    this.showAllRefugeeCamps();
+    this.connection.on('DataUpdated', () => {
+      this.deleteAllAffectedAreas();
+      this.showAllAffectedAreas();
+
+      this.deleteAllRefugeeCamps();
+      this.showAllRefugeeCamps();
+    });
+    this.connection.onreconnected(() => {
+      this.deleteAllAffectedAreas();
+      this.showAllAffectedAreas();
+
+      this.deleteAllRefugeeCamps();
+      this.showAllRefugeeCamps();
+    });
+  }
+
+  private showAllAffectedAreas(): void {
+    this.areaService.getAllAffectedArea()
+    .subscribe({
+      next: (data: APIResponse) => this.affectedAreas = data.message,
+      error: (errorData: any) => console.error(errorData.error.message)
+    });
+  }
+
+  private deleteAllAffectedAreas(): void {
+    this.affectedAreas = []
+  }
+
+  private showAllRefugeeCamps(): void {
+    this.campService.getAllRefugeeCamps()
+    .subscribe({
+      next: (data: APIResponse) => this.refugeeCamps = data.message,
+      error: (errorData: any) => console.error(errorData.error.message),
+    });
+  }
+
+  private deleteAllRefugeeCamps(): void {
+    this.refugeeCamps = []
   }
 
   private initMap(): void {
@@ -162,7 +198,7 @@ export class AdminDashboardComponent implements AfterViewInit, OnInit, OnDestroy
     }
   }
   
-  fillFormWithAreaData(area: AffectedArea) {
+  fillFormWithAreaData(area: any) {
     this.affectedAreaLatitude = area.latitude;
     this.affectedAreaLongitude = area.longitude;
     this.affectedAreaRadius = area.radius;
@@ -180,7 +216,7 @@ export class AdminDashboardComponent implements AfterViewInit, OnInit, OnDestroy
 
   addAffectedArea() {
     if (this.validateAffectedAreaForm()) {
-      const newArea: AffectedArea = {
+      const newArea = {
         id: Date.now(),
         latitude: this.affectedAreaLatitude,
         longitude: this.affectedAreaLongitude,
@@ -223,8 +259,10 @@ export class AdminDashboardComponent implements AfterViewInit, OnInit, OnDestroy
   }
 
   deleteCamp(id: number) {
-    this.refugeeCamps = this.refugeeCamps.filter(camp => camp.id !== id);
-    console.log('Deleted Refugee Camp ID:', id);
+    this.campService.deleteRefugeeCamp(id)
+    .subscribe({
+      error: (errorData: any) => console.log(errorData.error.message)
+    })
   }
 
   updateArea(id: number) {
