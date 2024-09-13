@@ -44,9 +44,9 @@ export class AdminDashboardComponent implements AfterViewInit, OnInit, OnDestroy
   // New properties for Affected Area form
   selectedAreaId: string = '';
   isEditing: boolean = false;
-  isEditingCamp:boolean = false;
+  isEditingCamp: boolean = false;
 
-  constructor(private fb: FormBuilder, private guard: AuthGuard, private router: Router, private mapDataService: MapDataService, private areaService: AffectedAreaService, private campService: RefugeeCampService) {}
+  constructor(private fb: FormBuilder, private guard: AuthGuard, private router: Router, private mapDataService: MapDataService, private areaService: AffectedAreaService, private campService: RefugeeCampService) { }
 
   ngOnInit() {
     this.subscribeToCoordinates();
@@ -65,14 +65,14 @@ export class AdminDashboardComponent implements AfterViewInit, OnInit, OnDestroy
   }
 
   private async checkValidation(): Promise<void> {
-    while(true) {
-        if (!await this.guard.canActivate())
-            break
-        await new Promise((resolve) => setTimeout(resolve, 1000))
+    while (true) {
+      if (!await this.guard.canActivate())
+        break
+      await new Promise((resolve) => setTimeout(resolve, 1000))
     }
     alert('Your Login has expired')
     this.router.navigate(['admin/login'])
-}
+  }
 
   private subscribeToCoordinates() {
     this.coordinatesSubscription = this.mapDataService.getCoordinates().subscribe(coords => {
@@ -85,11 +85,11 @@ export class AdminDashboardComponent implements AfterViewInit, OnInit, OnDestroy
 
   private startSignalRConnection(): void {
     this.connection = new SignalR.HubConnectionBuilder()
-    .withUrl(`${baseString}/notificationhub`)
-    .build();
+      .withUrl(`${baseString}/notificationhub`)
+      .build();
     this.connection
-    .start()
-    .catch(err => console.error('Error while starting SignalR connection: ' + err));
+      .start()
+      .catch(err => console.error('Error while starting SignalR connection: ' + err));
   }
 
   private updateMapOnNotification(): void {
@@ -113,10 +113,10 @@ export class AdminDashboardComponent implements AfterViewInit, OnInit, OnDestroy
 
   private showAllAffectedAreas(): void {
     this.areaService.getAllAffectedArea()
-    .subscribe({
-      next: (data: APIResponse) => this.affectedAreas = data.message,
-      error: (errorData: any) => console.error(errorData.error.message)
-    });
+      .subscribe({
+        next: (data: APIResponse) => this.affectedAreas = data.message,
+        error: (errorData: any) => console.error(errorData.error.message)
+      });
   }
 
   private deleteAllAffectedAreas(): void {
@@ -125,10 +125,10 @@ export class AdminDashboardComponent implements AfterViewInit, OnInit, OnDestroy
 
   private showAllRefugeeCamps(): void {
     this.campService.getAllRefugeeCamps()
-    .subscribe({
-      next: (data: APIResponse) => this.refugeeCamps = data.message,
-      error: (errorData: any) => console.error(errorData.error.message),
-    });
+      .subscribe({
+        next: (data: APIResponse) => this.refugeeCamps = data.message,
+        error: (errorData: any) => console.error(errorData.error.message),
+      });
   }
 
   private deleteAllRefugeeCamps(): void {
@@ -222,20 +222,25 @@ export class AdminDashboardComponent implements AfterViewInit, OnInit, OnDestroy
     }
   }
 
-  updateRefugeeCamp(){
+  updateRefugeeCamp() {
     if (this.validateRefugeeCampForm()) {
+
       const index = this.refugeeCamps.findIndex(camp => camp.id === parseInt(this.selectedAreaIdOrCampId));
-      if (index !== -1) {
-        this.refugeeCamps[index] = {
-          ...this.refugeeCamps[index],
-          latitude: this.refugeeCampLatitude,
-          longitude: this.refugeeCampLongitude
-        };
-        console.log('Refugee Camp Updated:', this.refugeeCamps[index]);
-        this.resetRefugeeCampForm();
-      }
+      if (index !== -1)
+        return
+      this.campService.updateRefugeeCamp(
+        Number(this.selectedAreaIdOrCampId),
+        Number(this.refugeeCampLatitude),
+        Number(this.refugeeCampLongitude)
+      )
+        .subscribe({
+          error: (errorData: any) => console.log(errorData.error.message)
+        })
     }
   }
+
+
+
 
   onAreaIdChange() {
     if (this.selectedAreaId) {
@@ -248,10 +253,10 @@ export class AdminDashboardComponent implements AfterViewInit, OnInit, OnDestroy
       this.resetAffectedAreaForm();
       this.isEditing = false;
     }
-    
+
   }
-  
-  
+
+
 
 
   fillFormWithAreaData(area: any) {
@@ -263,7 +268,7 @@ export class AdminDashboardComponent implements AfterViewInit, OnInit, OnDestroy
   }
 
   getSeverity(severity: number): string {
-    switch(severity) {
+    switch (severity) {
       case 1: return 'Moderate'
       case 2: return 'High'
       case 3: return 'Severe'
@@ -279,7 +284,7 @@ export class AdminDashboardComponent implements AfterViewInit, OnInit, OnDestroy
     }
   }
 
-  addOrUpdateRefugeeCamp(){
+  addOrUpdateRefugeeCamp() {
     if (this.isEditingCamp) {
       this.updateRefugeeCamp();
     } else {
@@ -296,7 +301,7 @@ export class AdminDashboardComponent implements AfterViewInit, OnInit, OnDestroy
       Number(this.affectedAreaRadius),
       Number(this.affectedAreaSeverity),
       this.disasterType
-      )
+    )
       .subscribe({
         error: (errorData: any) => console.log(errorData.error.message)
       })
@@ -306,21 +311,21 @@ export class AdminDashboardComponent implements AfterViewInit, OnInit, OnDestroy
     if (!this.validateAffectedAreaForm())
       return
     this.areaService.updateAffectedArea(
-        Number(this.selectedAreaId),
-        Number(this.affectedAreaLatitude),
-        Number(this.affectedAreaLongitude),
-        Number(this.affectedAreaRadius),
-        Number(this.affectedAreaSeverity),
-        this.disasterType
-      )
+      Number(this.selectedAreaId),
+      Number(this.affectedAreaLatitude),
+      Number(this.affectedAreaLongitude),
+      Number(this.affectedAreaRadius),
+      Number(this.affectedAreaSeverity),
+      this.disasterType
+    )
       .subscribe({
         error: (errorData: any) => console.log(errorData.error.message)
       })
   }
 
   validateAffectedAreaForm(): boolean {
-    return !!(this.affectedAreaLatitude && this.affectedAreaLongitude && 
-              this.affectedAreaRadius && this.affectedAreaSeverity && this.disasterType);
+    return !!(this.affectedAreaLatitude && this.affectedAreaLongitude &&
+      this.affectedAreaRadius && this.affectedAreaSeverity && this.disasterType);
   }
 
   validateRefugeeCampForm(): boolean {
@@ -333,9 +338,9 @@ export class AdminDashboardComponent implements AfterViewInit, OnInit, OnDestroy
 
   deleteCamp(id: number) {
     this.campService.deleteRefugeeCamp(id)
-    .subscribe({
-      error: (errorData: any) => console.log(errorData.error.message)
-    })
+      .subscribe({
+        error: (errorData: any) => console.log(errorData.error.message)
+      })
   }
 
   updateArea(id: number) {
@@ -350,9 +355,9 @@ export class AdminDashboardComponent implements AfterViewInit, OnInit, OnDestroy
 
   deleteArea(id: number) {
     this.areaService.deleteAffectedArea(id)
-    .subscribe({
-      error: (errorData: any) => console.log(errorData.error.message)
-    })
+      .subscribe({
+        error: (errorData: any) => console.log(errorData.error.message)
+      })
   }
 
   private resetRefugeeCampForm() {

@@ -25,4 +25,12 @@ export class RefugeeCampService {
       'longitude': longitude
     })
   }
+  public updateRefugeeCamp(campId: number,latitude: number, longitude: number): Observable<APIResponse> {
+    return this.http.put<APIResponse>(`${baseString}/refugeecamp`, {
+      'campId' : campId,
+      'latitude': latitude,
+      'longitude': longitude
+    })
+  }
 }
+
