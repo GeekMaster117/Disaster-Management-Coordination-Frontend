@@ -13,4 +13,18 @@ export class AffectedAreaService {
   public getAllAffectedArea(): Observable<APIResponse> {
     return this.http.get<APIResponse>(`${baseString}/affectedarea`)
   }
+
+  public deleteAffectedArea(id: number): Observable<APIResponse> {
+    return this.http.delete<APIResponse>(`${baseString}/affectedarea/${id}`)
+  }
+
+  public addAffectedArea(latitude: number, longitude: number, radius: number, severity: number, disasterType: string): Observable<APIResponse> {
+    return this.http.post<APIResponse>(`${baseString}/affectedarea`, {
+      'latitude': latitude,
+      'longitude': longitude,
+      'radius': radius,
+      'severity': severity,
+      'disasterType': disasterType
+    })
+  }
 }

@@ -20,6 +20,7 @@ export class AdminRegisterComponent implements OnInit {
     public registerForm: FormGroup = null!
 
     public ngOnInit(): void {
+        this.checkValidation()
         this.registerForm = this.fb.group({
             username: ['', [
                 Validators.required,
@@ -48,6 +49,16 @@ export class AdminRegisterComponent implements OnInit {
         {
             validator: equal('confirmPassword', 'password')
         })
+    }
+
+    private async checkValidation(): Promise<void> {
+        while(true) {
+            if (!await this.guard.canActivate())
+                break
+            await new Promise((resolve) => setTimeout(resolve, 1000))
+        }
+        alert('Your Login has expired')
+        this.router.navigate(['admin/login'])
     }
 
     public isInvalid(input: string) {

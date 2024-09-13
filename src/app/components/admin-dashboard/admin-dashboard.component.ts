@@ -9,6 +9,8 @@ import { baseString } from '../../../urls/basestring.url';
 import { APIResponse } from '../../../response/api.response';
 import { AffectedAreaService } from './admin-map/affected-area.service';
 import { RefugeeCampService } from './admin-map/refugee-camp.service';
+import { AuthGuard } from '../../../guard/auth.guard';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -44,7 +46,7 @@ export class AdminDashboardComponent implements AfterViewInit, OnInit, OnDestroy
   isEditing: boolean = false;
   isEditingCamp:boolean = false;
 
-  constructor(private fb: FormBuilder, private mapDataService: MapDataService, private areaService: AffectedAreaService, private campService: RefugeeCampService) {}
+  constructor(private fb: FormBuilder, private guard: AuthGuard, private router: Router, private mapDataService: MapDataService, private areaService: AffectedAreaService, private campService: RefugeeCampService) {}
 
   ngOnInit() {
     this.subscribeToCoordinates();
@@ -61,6 +63,16 @@ export class AdminDashboardComponent implements AfterViewInit, OnInit, OnDestroy
       this.coordinatesSubscription.unsubscribe();
     }
   }
+
+  private async checkValidation(): Promise<void> {
+    while(true) {
+        if (!await this.guard.canActivate())
+            break
+        await new Promise((resolve) => setTimeout(resolve, 1000))
+    }
+    alert('Your Login has expired')
+    this.router.navigate(['admin/login'])
+}
 
   private subscribeToCoordinates() {
     this.coordinatesSubscription = this.mapDataService.getCoordinates().subscribe(coords => {
@@ -254,6 +266,15 @@ export class AdminDashboardComponent implements AfterViewInit, OnInit, OnDestroy
     this.disasterType = area.disasterType;
   }
 
+  getSeverity(severity: number): string {
+    switch(severity) {
+      case 1: return 'Moderate'
+      case 2: return 'High'
+      case 3: return 'Severe'
+      default: return 'Unknown'
+    }
+  }
+
   addOrUpdateAffectedArea() {
     if (this.isEditing) {
       this.updateAffectedArea();
@@ -271,19 +292,16 @@ export class AdminDashboardComponent implements AfterViewInit, OnInit, OnDestroy
   }
 
   addAffectedArea() {
-    if (this.validateAffectedAreaForm()) {
-      const newArea = {
-        id: Date.now(),
-        latitude: this.affectedAreaLatitude,
-        longitude: this.affectedAreaLongitude,
-        radius: this.affectedAreaRadius,
-        severity: this.affectedAreaSeverity,
-        disasterType: this.disasterType
-      };
-      this.affectedAreas.push(newArea);
-      console.log('Affected Area Added:', newArea);
-      this.resetAffectedAreaForm();
-    }
+    this.areaService.addAffectedArea(
+      Number(this.affectedAreaLatitude),
+      Number(this.affectedAreaLongitude),
+      Number(this.affectedAreaRadius),
+      Number(this.affectedAreaSeverity),
+      this.disasterType
+      )
+      .subscribe({
+        error: (errorData: any) => console.log(errorData.error.message)
+      })
   }
 
   updateAffectedArea() {
@@ -335,8 +353,10 @@ export class AdminDashboardComponent implements AfterViewInit, OnInit, OnDestroy
   }
 
   deleteArea(id: number) {
-    this.affectedAreas = this.affectedAreas.filter(area => area.id !== id);
-    console.log('Deleted Affected Area ID:', id);
+    this.areaService.deleteAffectedArea(id)
+    .subscribe({
+      error: (errorData: any) => console.log(errorData.error.message)
+    })
   }
 
   private resetRefugeeCampForm() {
