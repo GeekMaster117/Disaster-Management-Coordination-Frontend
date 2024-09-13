@@ -27,4 +27,15 @@ export class AffectedAreaService {
       'disasterType': disasterType
     })
   }
+
+  public updateAffectedArea(areaId: number, latitude: number, longitude: number, radius: number, severity: number, disasterType: string): Observable<APIResponse> {
+    return this.http.put<APIResponse>(`${baseString}/affectedarea`, {
+      'areaId': areaId,
+      'latitude': latitude,
+      'longitude': longitude,
+      'radius': radius,
+      'severity': severity,
+      'disasterType': disasterType
+    })
+  }
 }

@@ -236,6 +236,8 @@ export class AdminDashboardComponent implements AfterViewInit, OnInit, OnDestroy
   }
 
   addAffectedArea() {
+    if (!this.validateAffectedAreaForm())
+      return
     this.areaService.addAffectedArea(
       Number(this.affectedAreaLatitude),
       Number(this.affectedAreaLongitude),
@@ -249,21 +251,19 @@ export class AdminDashboardComponent implements AfterViewInit, OnInit, OnDestroy
   }
 
   updateAffectedArea() {
-    if (this.validateAffectedAreaForm()) {
-      const index = this.affectedAreas.findIndex(area => area.id === parseInt(this.selectedAreaId));
-      if (index !== -1) {
-        this.affectedAreas[index] = {
-          ...this.affectedAreas[index],
-          latitude: this.affectedAreaLatitude,
-          longitude: this.affectedAreaLongitude,
-          radius: this.affectedAreaRadius,
-          severity: this.affectedAreaSeverity,
-          disasterType: this.disasterType
-        };
-        console.log('Affected Area Updated:', this.affectedAreas[index]);
-        this.resetAffectedAreaForm();
-      }
-    }
+    if (!this.validateAffectedAreaForm())
+      return
+    this.areaService.updateAffectedArea(
+        Number(this.selectedAreaId),
+        Number(this.affectedAreaLatitude),
+        Number(this.affectedAreaLongitude),
+        Number(this.affectedAreaRadius),
+        Number(this.affectedAreaSeverity),
+        this.disasterType
+      )
+      .subscribe({
+        error: (errorData: any) => console.log(errorData.error.message)
+      })
   }
 
   validateAffectedAreaForm(): boolean {
