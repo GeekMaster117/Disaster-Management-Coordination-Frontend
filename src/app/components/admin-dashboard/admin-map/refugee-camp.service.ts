@@ -17,4 +17,12 @@ export class RefugeeCampService {
   public deleteRefugeeCamp(id: number): Observable<APIResponse> {
     return this.http.delete<APIResponse>(`${baseString}/refugeecamp/${id}`)
   }
+
+  public addRefugeeCamp(id: number, latitude: number, longitude: number): Observable<APIResponse> {
+    return this.http.post<APIResponse>(`${baseString}/refugeecamp`, {
+      'areaId': id,
+      'latitude': latitude,
+      'longitude': longitude
+    })
+  }
 }

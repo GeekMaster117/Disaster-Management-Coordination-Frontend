@@ -22,7 +22,7 @@ export class AdminDashboardComponent implements AfterViewInit, OnInit, OnDestroy
   // Refugee Camp form inputs
   refugeeCampLatitude: string = '';
   refugeeCampLongitude: string = '';
-  selectedCampId: string = '';
+  selectedAreaIdOrCampId: string = '';
   // Affected Area form inputs
   affectedAreaLatitude: string = '';
   affectedAreaLongitude: string = '';
@@ -189,18 +189,12 @@ export class AdminDashboardComponent implements AfterViewInit, OnInit, OnDestroy
   }
 
   onCampSelectionChange() {
-    if (this.selectedCampId.startsWith('area_')) {
+    if (this.selectedAreaIdOrCampId.startsWith('area_')) {
       // User selected an area to add a new camp
-      const areaId = parseInt(this.selectedCampId.split('_')[1]);
-      const selectedArea = this.affectedAreas.find(area => area.areaId === areaId);
-      if (selectedArea) {
-        this.refugeeCampLatitude = selectedArea.latitude;
-        this.refugeeCampLongitude = selectedArea.longitude;
-      }
       this.isEditingCamp = false;
-    } else if (this.selectedCampId) {
+    } else if (this.selectedAreaIdOrCampId) {
       // User selected a camp to update
-      const campId = parseInt(this.selectedCampId);
+      const campId = parseInt(this.selectedAreaIdOrCampId);
       const selectedCamp = this.refugeeCamps.find(camp => camp.campId === campId);
       if (selectedCamp) {
         this.refugeeCampLatitude = selectedCamp.latitude;
@@ -216,19 +210,21 @@ export class AdminDashboardComponent implements AfterViewInit, OnInit, OnDestroy
 
   addRefugeeCamp() {
     if (this.refugeeCampLatitude && this.refugeeCampLongitude) {
-      console.log('Refugee Camp Added:', this.refugeeCampLatitude, this.refugeeCampLongitude);
-      this.refugeeCamps.push({
-        id: Date.now(),
-        latitude: this.refugeeCampLatitude,
-        longitude: this.refugeeCampLongitude
-      });
+      this.campService.addRefugeeCamp(
+        Number(this.selectedAreaIdOrCampId.slice(5)),
+        Number(this.refugeeCampLatitude),
+        Number(this.refugeeCampLongitude)
+        )
+        .subscribe({
+          error: (errorData: any) => console.log(errorData.error.message)
+        })
       this.resetRefugeeCampForm();
     }
   }
 
   updateRefugeeCamp(){
     if (this.validateRefugeeCampForm()) {
-      const index = this.refugeeCamps.findIndex(camp => camp.id === parseInt(this.selectedCampId));
+      const index = this.refugeeCamps.findIndex(camp => camp.id === parseInt(this.selectedAreaIdOrCampId));
       if (index !== -1) {
         this.refugeeCamps[index] = {
           ...this.refugeeCamps[index],
