@@ -6,8 +6,30 @@
         <!-- Card: Add Refugee Camp -->
         <div class="card">
           <div class="card-body">
-            <h5 class="card-title">Add Refugee Camp</h5>
+            <h5 class="card-title">{{isEditingCamp ? 'Update' : 'Add'}} Refugee Camp</h5>
             <form>
+              <div class="form-group">
+                <label for="campSelection">Select Option</label>
+                <select
+                  class="form-control"
+                  id="campSelection"
+                  [(ngModel)]="selectedCampId"
+                  name="campSelection"
+                  (change)="onCampSelectionChange()"
+                >
+                  <option value="">Add New Camp</option>
+                  <optgroup label="Add by Area Id:">
+                    <option *ngFor="let area of affectedAreas" [value]="'area_' + area.id">
+                      {{area.id}}
+                    </option>
+                  </optgroup>
+                  <optgroup label="Update by Camp Id:">
+                    <option *ngFor="let camp of refugeeCamps" [value]="camp.campId">
+                      {{camp.campId}}
+                    </option>
+                  </optgroup>
+                </select>
+              </div>
               <div class="form-group">
                 <label for="refugeeLatitude">Latitude</label>
                 <input
@@ -34,8 +56,8 @@
                 <button type="button" class="btn btn-danger" (click)="toggleRefugeePickMode()">
                   {{ RefugeepickMode ? 'Cancel' : 'Pick' }}
                 </button>
-                <button type="button" class="btn btn-primary" (click)="addRefugeeCamp()">
-                  Add
+                <button type="button" class="btn btn-primary" (click)="addOrUpdateRefugeeCamp()">
+                  {{isEditingCamp ? 'Update' : 'Add'}}
                 </button>
               </div>
             </form>
