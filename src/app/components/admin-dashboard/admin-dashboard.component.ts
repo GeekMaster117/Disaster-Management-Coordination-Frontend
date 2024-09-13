@@ -1,6 +1,8 @@
 import { AfterViewInit, Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { MapDataService } from './map-data.service';
+
+
 import { FormBuilder } from '@angular/forms';
 import * as SignalR from '@microsoft/signalr';
 import { baseString } from '../../../urls/basestring.url';
@@ -18,7 +20,7 @@ export class AdminDashboardComponent implements AfterViewInit, OnInit, OnDestroy
   // Refugee Camp form inputs
   refugeeCampLatitude: string = '';
   refugeeCampLongitude: string = '';
-
+  selectedCampId: string = '';
   // Affected Area form inputs
   affectedAreaLatitude: string = '';
   affectedAreaLongitude: string = '';
@@ -40,6 +42,7 @@ export class AdminDashboardComponent implements AfterViewInit, OnInit, OnDestroy
   // New properties for Affected Area form
   selectedAreaId: string = '';
   isEditing: boolean = false;
+  isEditingCamp:boolean = false;
 
   constructor(private fb: FormBuilder, private mapDataService: MapDataService, private areaService: AffectedAreaService, private campService: RefugeeCampService) {}
 
@@ -173,6 +176,32 @@ export class AdminDashboardComponent implements AfterViewInit, OnInit, OnDestroy
     }
   }
 
+  onCampSelectionChange() {
+    if (this.selectedCampId.startsWith('area_')) {
+      // User selected an area to add a new camp
+      const areaId = parseInt(this.selectedCampId.split('_')[1]);
+      const selectedArea = this.affectedAreas.find(area => area.id === areaId);
+      if (selectedArea) {
+        this.refugeeCampLatitude = selectedArea.latitude;
+        this.refugeeCampLongitude = selectedArea.longitude;
+      }
+      this.isEditingCamp = false;
+    } else if (this.selectedCampId) {
+      // User selected a camp to update
+      const campId = parseInt(this.selectedCampId);
+      const selectedCamp = this.refugeeCamps.find(camp => camp.campId === campId);
+      if (selectedCamp) {
+        this.refugeeCampLatitude = selectedCamp.latitude;
+        this.refugeeCampLongitude = selectedCamp.longitude;
+      }
+      this.isEditingCamp = true;
+    } else {
+      // User selected "Add New Camp"
+      this.resetRefugeeCampForm();
+      this.isEditingCamp = false;
+    }
+  }
+
   addRefugeeCamp() {
     if (this.refugeeCampLatitude && this.refugeeCampLongitude) {
       console.log('Refugee Camp Added:', this.refugeeCampLatitude, this.refugeeCampLongitude);
@@ -182,6 +211,21 @@ export class AdminDashboardComponent implements AfterViewInit, OnInit, OnDestroy
         longitude: this.refugeeCampLongitude
       });
       this.resetRefugeeCampForm();
+    }
+  }
+
+  updateRefugeeCamp(){
+    if (this.validateRefugeeCampForm()) {
+      const index = this.refugeeCamps.findIndex(camp => camp.id === parseInt(this.selectedCampId));
+      if (index !== -1) {
+        this.refugeeCamps[index] = {
+          ...this.refugeeCamps[index],
+          latitude: this.refugeeCampLatitude,
+          longitude: this.refugeeCampLongitude
+        };
+        console.log('Refugee Camp Updated:', this.refugeeCamps[index]);
+        this.resetRefugeeCampForm();
+      }
     }
   }
 
@@ -196,8 +240,12 @@ export class AdminDashboardComponent implements AfterViewInit, OnInit, OnDestroy
       this.resetAffectedAreaForm();
       this.isEditing = false;
     }
+    
   }
   
+  
+
+
   fillFormWithAreaData(area: any) {
     this.affectedAreaLatitude = area.latitude;
     this.affectedAreaLongitude = area.longitude;
@@ -211,6 +259,14 @@ export class AdminDashboardComponent implements AfterViewInit, OnInit, OnDestroy
       this.updateAffectedArea();
     } else {
       this.addAffectedArea();
+    }
+  }
+
+  addOrUpdateRefugeeCamp(){
+    if (this.isEditingCamp) {
+      this.updateRefugeeCamp();
+    } else {
+      this.addRefugeeCamp();
     }
   }
 
@@ -253,6 +309,9 @@ export class AdminDashboardComponent implements AfterViewInit, OnInit, OnDestroy
               this.affectedAreaRadius && this.affectedAreaSeverity && this.disasterType);
   }
 
+  validateRefugeeCampForm(): boolean {
+    return !!(this.refugeeCampLatitude && this.refugeeCampLongitude);
+  }
   updateCamp(id: number) {
     console.log('Update Refugee Camp ID:', id);
     // Implement update logic here
@@ -297,6 +356,7 @@ export class AdminDashboardComponent implements AfterViewInit, OnInit, OnDestroy
     this.disasterType = '';
     this.AffectedpickMode = false;
     this.isEditing = false;
+    this.isEditingCamp = false;
     this.mapDataService.setPickMode(false, null);
     this.clearMarker();
   }
