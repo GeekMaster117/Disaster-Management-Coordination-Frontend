@@ -44,9 +44,9 @@ export class AdminMapComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
     this.addIcons();
+    this.initMap();
     this.startSignalRConnection();
     this.updateMapOnNotification();
-    this.initMap();
     this.showUserLocation();
     this.subscribeToPickMode();
   }
@@ -93,6 +93,8 @@ export class AdminMapComponent implements OnInit, OnDestroy {
 
       this.deleteAllRefugeeCamps();
       this.showAllRefugeeCamps();
+
+      this.deleteLine();
     });
     this.connection.onreconnected(() => {
       this.deleteAllAffectedAreas();
@@ -100,6 +102,8 @@ export class AdminMapComponent implements OnInit, OnDestroy {
 
       this.deleteAllRefugeeCamps();
       this.showAllRefugeeCamps();
+
+      this.deleteLine();
     });
   }
 
@@ -117,6 +121,7 @@ export class AdminMapComponent implements OnInit, OnDestroy {
     const zoomControl = new Leaflet.Control.Zoom({ position: 'bottomleft' }).addTo(this.map);
 
     this.map.on('click', (e: Leaflet.LeafletMouseEvent) => {
+      this.deleteLine();
       if (this.pickMode.isActive) {
         const { lat, lng } = e.latlng;
         this.mapDataService.setCoordinates(lat, lng);
@@ -226,6 +231,7 @@ export class AdminMapComponent implements OnInit, OnDestroy {
             draggable: false
           })
           .on('click', (event: Leaflet.LeafletMouseEvent) => {
+            if (!this.userLocationMarker) return;
             this.showRoute(
               this.userLocationMarker.getLatLng(),
               Leaflet.latLng(camp.latitude, camp.longitude)
@@ -246,8 +252,6 @@ export class AdminMapComponent implements OnInit, OnDestroy {
   }
 
   private showRoute(from: Leaflet.LatLng, to: Leaflet.LatLng): void {
-    if (!this.userLocationMarker) return;
-
     (Leaflet.Routing.osrmv1() as any).route([
     Leaflet.Routing.waypoint(from),
     Leaflet.Routing.waypoint(to)

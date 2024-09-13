@@ -238,10 +238,6 @@ export class AdminDashboardComponent implements AfterViewInit, OnInit, OnDestroy
         })
     }
   }
-
-
-
-
   onAreaIdChange() {
     if (this.selectedAreaId) {
       const selectedArea = this.affectedAreas.find(area => area.areaId === parseInt(this.selectedAreaId));

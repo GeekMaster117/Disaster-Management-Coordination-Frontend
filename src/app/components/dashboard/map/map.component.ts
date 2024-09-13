@@ -35,9 +35,9 @@ export class MapComponent implements OnInit {
 
   public ngOnInit(): void {
     this.addIcons()
+    this.initMap()
     this.startSignalRConnection()
     this.updateMapOnNotification()
-    this.initMap()
     this.showUserLocation()
   }
 
@@ -77,6 +77,8 @@ export class MapComponent implements OnInit {
 
       this.deleteAllRefugeeCamps()
       this.showAllRefugeeCamps()
+
+      this.deleteLine()
     })
     this.connection.onreconnected(() => {
       this.deleteAllAffectedAreas()
@@ -203,6 +205,7 @@ export class MapComponent implements OnInit {
             draggable: false
           })
           .on('click', (event: Leaflet.LeafletMouseEvent) => {
+            if (!this.userLocationMarker) return;
             this.showRoute(
               this.userLocationMarker.getLatLng(),
               Leaflet.latLng(camp.latitude, camp.longitude)
@@ -224,8 +227,6 @@ export class MapComponent implements OnInit {
   }
 
   private showRoute(from: Leaflet.LatLng, to: Leaflet.LatLng): void {
-    if (!this.userLocationMarker)
-      return
     (Leaflet.Routing.osrmv1() as any).route([
     Leaflet.Routing.waypoint(from),
     Leaflet.Routing.waypoint(to)
