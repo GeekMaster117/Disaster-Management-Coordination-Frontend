@@ -192,7 +192,7 @@ export class AdminDashboardComponent implements AfterViewInit, OnInit, OnDestroy
     if (this.selectedCampId.startsWith('area_')) {
       // User selected an area to add a new camp
       const areaId = parseInt(this.selectedCampId.split('_')[1]);
-      const selectedArea = this.affectedAreas.find(area => area.id === areaId);
+      const selectedArea = this.affectedAreas.find(area => area.areaId === areaId);
       if (selectedArea) {
         this.refugeeCampLatitude = selectedArea.latitude;
         this.refugeeCampLongitude = selectedArea.longitude;
@@ -243,7 +243,7 @@ export class AdminDashboardComponent implements AfterViewInit, OnInit, OnDestroy
 
   onAreaIdChange() {
     if (this.selectedAreaId) {
-      const selectedArea = this.affectedAreas.find(area => area.id === parseInt(this.selectedAreaId));
+      const selectedArea = this.affectedAreas.find(area => area.areaId === parseInt(this.selectedAreaId));
       if (selectedArea) {
         this.fillFormWithAreaData(selectedArea);
         this.isEditing = true;
@@ -363,6 +363,7 @@ export class AdminDashboardComponent implements AfterViewInit, OnInit, OnDestroy
     this.refugeeCampLatitude = '';
     this.refugeeCampLongitude = '';
     this.RefugeepickMode = false;
+    this.isEditingCamp = false;
     this.mapDataService.setPickMode(false, null);
     this.clearMarker();
   }
@@ -376,7 +377,6 @@ export class AdminDashboardComponent implements AfterViewInit, OnInit, OnDestroy
     this.disasterType = '';
     this.AffectedpickMode = false;
     this.isEditing = false;
-    this.isEditingCamp = false;
     this.mapDataService.setPickMode(false, null);
     this.clearMarker();
   }

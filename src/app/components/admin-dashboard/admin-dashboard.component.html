@@ -19,8 +19,8 @@
                 >
                   <option value="">Add New Camp</option>
                   <optgroup label="Add by Area Id:">
-                    <option *ngFor="let area of affectedAreas" [value]="'area_' + area.id">
-                      {{area.id}}
+                    <option *ngFor="let area of affectedAreas" [value]="'area_' + area.areaId">
+                      {{area.areaId}}
                     </option>
                   </optgroup>
                   <optgroup label="Update by Camp Id:">
